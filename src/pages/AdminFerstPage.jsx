@@ -7,8 +7,10 @@ import { SiSearxng } from "react-icons/si";
 import { CiLogout } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 import { Fade } from "react-awesome-reveal";
-
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 export default function AdminFerstPage() {
+    const navigate = useNavigate();
     return (
         <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex">
             <div className='flex flex-wrap w-2/3 mx-auto image-bg-login max-h-full h-4/3 my-auto rounded-lg justify-between p-5 overflow-auto '>
@@ -16,7 +18,7 @@ export default function AdminFerstPage() {
                 <div className='w-full flex justify-between flex-wrap'>
                     <Fade className='md:w-5/12 w-full' delay={100}>
                         <div className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='DeepSkyBlue' icon={<IoPersonAddOutline />} header='ثبت کاربر جدید' discription='ثبت کاربر جدید در سیستم با ویژگی های مختلف' />
+                            <AdminItems href='/Admin/AddNewUser' color='DeepSkyBlue' icon={<IoPersonAddOutline />} header='ثبت کاربر جدید' discription='ثبت کاربر جدید در سیستم با ویژگی های مختلف' />
                         </div>
                     </Fade>
 
@@ -39,8 +41,23 @@ export default function AdminFerstPage() {
                     </Fade>
 
                     <Fade className='md:w-5/12 w-full' delay={500}>
-                        <div className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='RebeccaPurple' icon={<CiLogout />} header='خروج از سیستم' discription='برای خروج از این گزینه استفاده کنید' />
+                        <div onClick={() => Swal.fire({
+                            title: "میخواهید از حساب کاربری خود خارج شوید",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "بله خارج شو"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                navigate('/')
+                                Swal.fire({
+                                    title: "از حساب کاربری خود خارج شدید",
+                                    icon: "success"
+                                });
+                            }
+                        })} className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
+                            <AdminItems href='' color='RebeccaPurple' icon={<CiLogout />} header='خروج از سیستم' discription='برای خروج از این گزینه استفاده کنید' />
                         </div>
                     </Fade>
 
