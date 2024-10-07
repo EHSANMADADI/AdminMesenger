@@ -116,8 +116,7 @@ export default function FormAddNewuser() {
         <Fade delay={400}>
           <div className="mb-5">
             <label className="font-bold" htmlFor="username">
-           نام کاربری 
-
+              نام کاربری
             </label>
             <input
               className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
@@ -129,9 +128,9 @@ export default function FormAddNewuser() {
           </div>
         </Fade>
         <Fade delay={450}>
-        <div className="mb-5">
+          <div className="mb-5">
             <label className="font-bold" htmlFor="password">
-             رمز عبور
+              رمز عبور
             </label>
             <input
               className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
@@ -142,9 +141,20 @@ export default function FormAddNewuser() {
             />
           </div>
         </Fade>
+        <Fade delay={500}>
+          <label className="font-bold" htmlFor="picture">
+             تصویر نمایه
+          </label>
+          <input className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2 bg-gray-200" type="file" placeholder="تصویر نمایه را انتخاب کنید"/>
+        </Fade>
 
         <Fade delay={500}>
-            <button className="bg-green-500 text-lg font-black px-8 rounded-2xl text-gray-200 hover:bg-green-700 hover:scale-105 duration-300 py-3" type="submit">ثبت</button>
+          <button
+            className="bg-green-500 text-lg font-black px-8 rounded-2xl text-gray-200 hover:bg-green-700 hover:scale-105 duration-300 py-3"
+            type="submit"
+          >
+            ثبت
+          </button>
         </Fade>
       </form>
     </div>

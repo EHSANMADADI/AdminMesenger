@@ -30,7 +30,7 @@ export default function AdminFerstPage() {
 
                     <Fade className='md:w-5/12 w-full' delay={300}>
                         <div className='my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='Violet' icon={<TbLockFilled />} header='تایین سطح دسترسی' discription='ایجاد دسترسی عمومی برای مخاطبین' />
+                            <AdminItems href='/Admin/AddPermission' color='Violet' icon={<TbLockFilled />} header='تایین سطح دسترسی' discription='ایجاد دسترسی عمومی برای مخاطبین' />
                         </div>
                     </Fade>
 
@@ -64,7 +64,7 @@ export default function AdminFerstPage() {
 
                     <Fade className='md:w-5/12 w-full' delay={600}>
                         <div className='my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems discription='تعداد کاربران' color='ForestGreen' icon={<FaUsers />} header='ساخت و مدیریت گروه' />
+                            <AdminItems href='/Admin/AddGroup' discription='تعداد کاربران' color='ForestGreen' icon={<FaUsers />} header='ساخت و مدیریت گروه' />
                         </div>
                     </Fade>
                 </div>
