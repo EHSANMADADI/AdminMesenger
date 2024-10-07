@@ -24,13 +24,13 @@ export default function AdminFerstPage() {
 
                     <Fade className='md:w-5/12 w-full' delay={200}>
                         <div className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='Orange' icon={<FaUsersViewfinder />} header='مدیریت کاربران' discription='مشاهده و مدیریت لیست کاربران ثبت شده' />
+                            <AdminItems href='/Admin/ManageUser' color='Orange' icon={<FaUsersViewfinder />} header='مدیریت کاربران' discription='مشاهده و مدیریت لیست کاربران ثبت شده' />
                         </div>
                     </Fade>
 
                     <Fade className='md:w-5/12 w-full' delay={300}>
                         <div className='my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='Orange' icon={<TbLockFilled />} header='تایین سطح دسترسی' discription='ایجاد دسترسی عمومی برای مخاطبین' />
+                            <AdminItems color='Violet' icon={<TbLockFilled />} header='تایین سطح دسترسی' discription='ایجاد دسترسی عمومی برای مخاطبین' />
                         </div>
                     </Fade>
 
@@ -47,6 +47,7 @@ export default function AdminFerstPage() {
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",
                             cancelButtonColor: "#d33",
+                            cancelButtonText: "خیر",
                             confirmButtonText: "بله خارج شو"
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -63,7 +64,7 @@ export default function AdminFerstPage() {
 
                     <Fade className='md:w-5/12 w-full' delay={600}>
                         <div className='my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='ForestGreen' icon={<FaUsers />} header='ساخت و مدیریت گروه' />
+                            <AdminItems discription='تعداد کاربران' color='ForestGreen' icon={<FaUsers />} header='ساخت و مدیریت گروه' />
                         </div>
                     </Fade>
                 </div>

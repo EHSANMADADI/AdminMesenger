@@ -5,6 +5,7 @@ import NotFound from "./Component/NotFound";
 import LoginPage from "./pages/LoginPage";
 import AdminFerstPage from "./pages/AdminFerstPage";
 import AddNewUserPage from "./pages/AddNewUserPage";
+import ManageUserPage from "./pages/ManageUserPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="Admin" element={<AdminFerstPage />} />
         <Route path="Admin/AddNewUser" element={<AddNewUserPage />} />
+        <Route path="Admin/ManageUser" element={<ManageUserPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
