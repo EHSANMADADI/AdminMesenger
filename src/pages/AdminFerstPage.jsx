@@ -36,7 +36,7 @@ export default function AdminFerstPage() {
 
                     <Fade className='md:w-5/12 w-full' delay={400}>
                         <div className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
-                            <AdminItems color='Tomato' icon={<SiSearxng />} header='جست و جو در محتوا' discription='جست و جو در محتوای تمام چت ها' />
+                            <AdminItems href='/Admin/Search' color='Tomato' icon={<SiSearxng />} header='جست و جو در محتوا' discription='جست و جو در محتوای تمام چت ها' />
                         </div>
                     </Fade>
 

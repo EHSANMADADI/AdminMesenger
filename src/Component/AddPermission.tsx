@@ -14,6 +14,17 @@ export default function AddPermission() {
         >
           <IoMdArrowRoundBack />
         </span>
+
+        <div dir="rtl" className=" w-5/6">
+          <h3 className="text-gray-700 m-2 border-b-2 font-black text-xl p-1 mb-2">
+            تایین دسترسی
+          </h3>
+          <p className="text-gray-500 p-4 font-bold text-lg">
+            شما در این بخش میتوانید بینهایت دسترسی را برای کاربران خود ایجاد
+            کنید
+          .این عمل برای حفظ محرمانگی شما تایین شده است دقت داشته باشید انتخاب سطح دسترسی اجباری نیست و میتواند تایین نگردد
+          </p>
+        </div>
       </div>
     </div>
   );
