@@ -4,7 +4,7 @@ import bgUser from "../Image/none.jpg";
 export default function UserUi() {
   return (
     <div className="mr-5">
-      <div className="flex  items-center border-2 my-2 w-2/5 p-1 rounded-md cursor-pointer hover:bg-gray-200 duration-200 hover:scale-105">
+      <div className="flex  items-center border-2 my-2 md:w-2/5 w-full p-1 rounded-md cursor-pointer hover:bg-gray-200 duration-200 hover:scale-105">
         <input
           type="checkbox"
           className=" rounded-full md:w-5 mx-3 md:h-5 w-3 h-3"
@@ -19,7 +19,7 @@ export default function UserUi() {
         <span className="font-bold md:text-lg text-sm">احسان مددی </span>
       </div>
 
-      <div className="flex  items-center border-2 my-2 w-2/5 p-1 rounded-md cursor-pointer hover:bg-gray-200 duration-200 hover:scale-105">
+      <div className="flex  items-center border-2 my-2 md:w-2/5 w-full p-1 rounded-md cursor-pointer hover:bg-gray-200 duration-200 hover:scale-105">
         <input
           type="checkbox"
           className=" rounded-full md:w-5 mx-3 md:h-5 w-3 h-3"

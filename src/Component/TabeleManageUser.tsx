@@ -33,16 +33,16 @@ export default function TabeleManageUser() {
         <table className="w-full  text-gray-500">
           <thead className="text-base font-bold text-gray-800  bg-blue-100">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="md:px-6 px-3 py-3">
                 شناسه
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="md:px-6 px-3 py-3">
                 نام کامل
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="md:px-6 px-3 py-3">
                 نام کاربری
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="md:px-6 px-3 py-3">
                 کاربردها
               </th>
             </tr>
@@ -55,9 +55,9 @@ export default function TabeleManageUser() {
               >
                 15
               </th>
-              <td className="px-6 py-4">احسان مددی</td>
-              <td className="px-6 py-4">ehsan</td>
-              <td className="px-6 py-4">
+              <td className="md:px-6 px-3 py-4">احسان مددی</td>
+              <td className="md:px-6 px-3 py-4">ehsan</td>
+              <td className="md:px-6 px-3 py-4">
                 <div className="flex items-center justify-center">
                   <span  onClick={deleteItem} className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />

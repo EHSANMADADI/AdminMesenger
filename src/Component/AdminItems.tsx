@@ -21,7 +21,7 @@ export default function AdminItems({
       onClick={() => {
         navigate(`${href}`);
       }}
-      className="flex p-10 flex-col items-center justify-center rounded-lg text-white"
+      className="flex p-10 flex-col items-center text-center justify-center rounded-lg text-white"
       style={{ backgroundColor: color }}
     >
       <div className="my-3">

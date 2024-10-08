@@ -5,7 +5,9 @@ export default function FormAddNewuser() {
   return (
     <div dir="rtl" className="w-4/5">
       <Fade delay={100}>
-        <h5 className="m-2 font-black text-xl border-b-2 p-2">ثبت کاربر جدید</h5>
+        <h5 className="m-2 font-black text-xl border-b-2 p-2">
+          ثبت کاربر جدید
+        </h5>
       </Fade>
 
       <form className="p-5">
@@ -143,9 +145,15 @@ export default function FormAddNewuser() {
         </Fade>
         <Fade delay={500}>
           <label className="font-bold" htmlFor="picture">
-             تصویر نمایه
+            تصویر نمایه
           </label>
-          <input className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2 bg-gray-200" type="file" placeholder="تصویر نمایه را انتخاب کنید"/>
+      
+            <input
+              className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2
+           bg-gray-200"
+              type="file"
+            />
+
         </Fade>
 
         <Fade delay={500}>

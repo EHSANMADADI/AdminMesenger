@@ -7,7 +7,7 @@ export default function FormAddGroup() {
   return (
     <div dir="rtl" className="flex flex-end flex-col">
       <form
-        className="p-5 w-4/6"
+        className="p-5 md:w-4/6 w-full"
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -26,12 +26,12 @@ export default function FormAddGroup() {
           />
         </div>
 
-        <div className="flex items-center bg-white rounded border">
+        <div className="flex items-center bg-white rounded border overflow-hidden">
           <span className="text-gray-700 text-3xl py-2 px-3">
             <MdPersonSearch />
           </span>
           <input
-            className="py-2 px-3 bg-transparent focus:outline-none"
+            className="py-2 px-3 bg-transparent focus:outline-none overflow-hidden"
             placeholder="جست و جو کاربران ..."
           />
         </div>
