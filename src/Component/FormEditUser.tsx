@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Fade } from "react-awesome-reveal";
-
-export default function FormAddNewuser() {
+export default function FormEditUser() {
+  const [Name, setName] = useState("احسان مددی");
   return (
     <div dir="rtl" className="w-4/5">
       <Fade delay={100}>
-        <h5 className="m-2 font-black text-xl border-b-2 p-2">ثبت کاربر جدید</h5>
+        <h5 className="m-2 font-black text-xl border-b-2 p-2">ویرایش کاربر</h5>
       </Fade>
 
       <form className="p-5">
@@ -19,6 +19,7 @@ export default function FormAddNewuser() {
               type="text"
               id="name"
               name="name"
+              value="احسان مددی"
               required
             />
           </div>
@@ -35,6 +36,7 @@ export default function FormAddNewuser() {
               id="telephone"
               name="telephone"
               pattern="^09[0-9]{9}$"
+              value="09126508968"
               inputMode="numeric"
               title="شماره تلفن باید با 09 شروع شده و 11 رقم باشد."
               required
@@ -113,42 +115,38 @@ export default function FormAddNewuser() {
           </div>
         </Fade>
 
-        <Fade delay={400}>
-          <div className="mb-5">
-            <label className="font-bold" htmlFor="username">
-              نام کاربری
-            </label>
-            <input
-              className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
-              type="text"
-              id="username"
-              name="username"
-              required
-            />
-          </div>
-        </Fade>
-        <Fade delay={450}>
-          <div className="mb-5">
-            <label className="font-bold" htmlFor="password">
-              رمز عبور
-            </label>
-            <input
-              className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
-              type="password"
-              id="password"
-              name="password"
-              required
-            />
-          </div>
-        </Fade>
         <Fade delay={500}>
           <label className="font-bold" htmlFor="picture">
-             تصویر نمایه
+            تصویر نمایه
           </label>
-          <input className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2 bg-gray-200" type="file" placeholder="تصویر نمایه را انتخاب کنید"/>
+          <input
+            className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2 bg-gray-200"
+            type="file"
+            placeholder="تصویر نمایه را انتخاب کنید"
+          />
+        </Fade>
+        <Fade className="w-full">
+          {/* <button className="w-full px-5 py-3 m-2 rounded-2xl bg-red-600 text-white">
+            قطع دسترسی کاربر به پیام رسان
+          </button> */}
+          <div className="flex items-center justify-start">
+            <label
+              htmlFor="vue-checkbox-list"
+              className=" py-3 ms-2 text-base font-black text-gray-900"
+            >
+              قطع کامل دسترسی کاربر
+            </label>
+
+            <input
+              id="vue-checkbox-list"
+             type="checkbox"
+             
+              className="w-5 h-5 mx-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+            />
+          </div>
         </Fade>
 
-        <Fade delay={500}>
+        <Fade delay={600}>
           <button
             className="bg-green-500 text-lg font-black px-8 rounded-2xl text-gray-200 hover:bg-green-700 hover:scale-105 duration-300 py-3"
             type="submit"

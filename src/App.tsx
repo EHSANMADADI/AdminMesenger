@@ -8,6 +8,7 @@ import AddNewUserPage from "./pages/AddNewUserPage";
 import ManageUserPage from "./pages/ManageUserPage";
 import AddGroupPage from "./pages/AddGroupPage";
 import AddPermission from "./Component/AddPermission";
+import UserEditPage from "./pages/UserEditPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="Admin/ManageUser" element={<ManageUserPage />} />
         <Route path="Admin/AddGroup" element={<AddGroupPage />} />
         <Route path="Admin/AddPermission" element={<AddPermission />} />
+        <Route path="Admin/AddNewUser/edit/:userId" element={<UserEditPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

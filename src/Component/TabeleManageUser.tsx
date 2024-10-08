@@ -2,7 +2,10 @@ import React from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineManageAccounts } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 export default function TabeleManageUser() {
+  const navigate = useNavigate();
+  const id =5
   return (
     <div>
       <div
@@ -41,7 +44,7 @@ export default function TabeleManageUser() {
                   <span className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />
                   </span>
-                  <span className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
+                  <span onClick={()=>{navigate(`/Admin/AddNewUser/edit/${id}`)}} className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
                     < CiEdit/>
                   </span>
                   <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl  hover:text-white">
@@ -64,7 +67,7 @@ export default function TabeleManageUser() {
                   <span className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />
                   </span>
-                  <span className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
+                  <span onClick={()=>{navigate(`/Admin/AddNewUser/edit/${id}`)}} className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
                     < CiEdit/>
                   </span>
                   <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl  hover:text-white">
@@ -87,7 +90,7 @@ export default function TabeleManageUser() {
                   <span className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />
                   </span>
-                  <span className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
+                  <span onClick={()=>{navigate(`/Admin/AddNewUser/edit/${id}`)}} className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
                     < CiEdit/>
                   </span>
                   <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl  hover:text-white">
@@ -110,7 +113,7 @@ export default function TabeleManageUser() {
                   <span className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />
                   </span>
-                  <span className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
+                  <span onClick={()=>{navigate(`/Admin/AddNewUser/edit/${id}`)}} className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
                     < CiEdit/>
                   </span>
                   <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl  hover:text-white">
@@ -133,7 +136,7 @@ export default function TabeleManageUser() {
                   <span className="text-red-600 cursor-pointer  hover:text-white text-2xl border rounded-full p-2 border-red-400 hover:bg-red-400 duration-200">
                     <MdDeleteForever />
                   </span>
-                  <span className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
+                  <span onClick={()=>{navigate(`/Admin/AddNewUser/edit/${id}`)}} className="text-green-600 cursor-pointer  text-2xl border rounded-full p-2 border-green-400  hover:text-white hover:bg-green-400 mx-2 duration-200">
                     < CiEdit/>
                   </span>
                   <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl  hover:text-white">
