@@ -2,7 +2,7 @@ import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import FormEditUser from "./ManageUser/FormEditUser";
+import FormEditUser from "./FormEditUser";
 export default function EditUser() {
   const { userId } = useParams();
   const navigate = useNavigate();

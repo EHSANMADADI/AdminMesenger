@@ -7,9 +7,9 @@ import AdminFerstPage from "./pages/AdminFerstPage";
 import AddNewUserPage from "./pages/AddNewUserPage";
 import ManageUserPage from "./pages/ManageUserPage";
 import AddGroupPage from "./pages/AddGroupPage";
-import AddPermission from "./Component/AddPermission";
 import UserEditPage from "./pages/UserEditPage";
 import SearchPage from "./pages/SearchPage";
+import AddPermissionPage from "./pages/AddPermissionPage";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path="Admin/AddNewUser" element={<AddNewUserPage />} />
         <Route path="Admin/ManageUser" element={<ManageUserPage />} />
         <Route path="Admin/AddGroup" element={<AddGroupPage />} />
-        <Route path="Admin/AddPermission" element={<AddPermission />} />
+        <Route path="Admin/AddPermission" element={<AddPermissionPage />} />
         <Route path="Admin/ManageUser/edit/:userId" element={<UserEditPage />} />
         <Route path="/Admin/Search" element={<SearchPage/>}/>
         <Route path="*" element={<NotFound />} />

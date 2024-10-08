@@ -1,9 +1,9 @@
 import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import FormAddGroup from "./CreateGroup/FormAddGroup";
+import FormAddGroup from "./FormAddGroup";
 import { Fade } from "react-awesome-reveal";
-import ListGroup from "./CreateGroup/ListGroup";
+import ListGroup from "./ListGroup";
 
 export default function AddGroup() {
   const navigate = useNavigate();

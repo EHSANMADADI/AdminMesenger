@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
-import bgUser from "../Image/none.jpg";
+import bgUser from "../../Image/none.jpg";
 export default function UserUi() {
   return (
     <div className="mr-5">
