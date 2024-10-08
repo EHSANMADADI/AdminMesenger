@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Fade } from "react-awesome-reveal";
+
 export default function FormEditUser() {
-  const [Name, setName] = useState("احسان مددی");
+  const [name, setName] = useState("احسان مددی");
+  const [phoneNumber, setPhoneNumber] = useState("09126508968");
+
   return (
     <div dir="rtl" className="w-4/5">
       <Fade delay={100}>
@@ -19,7 +22,11 @@ export default function FormEditUser() {
               type="text"
               id="name"
               name="name"
-              value="احسان مددی"
+              value={name}
+              onChange={(e) => {
+                const val = e.target.value;
+                setName(val);
+              }}
               required
             />
           </div>
@@ -32,17 +39,22 @@ export default function FormEditUser() {
             </label>
             <input
               className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
-              type="number"
+              type="text"
               id="telephone"
               name="telephone"
               pattern="^09[0-9]{9}$"
-              value="09126508968"
+              value={phoneNumber}
+              onChange={(e) => {
+                const val = e.target.value;
+                setPhoneNumber(val);
+              }}
               inputMode="numeric"
               title="شماره تلفن باید با 09 شروع شده و 11 رقم باشد."
               required
             />
           </div>
         </Fade>
+
         <Fade delay={350}>
           <div className="mb-5">
             <span className="font-black mb-5">انواع دسترسی ها</span>
@@ -125,10 +137,8 @@ export default function FormEditUser() {
             placeholder="تصویر نمایه را انتخاب کنید"
           />
         </Fade>
+
         <Fade className="w-full">
-          {/* <button className="w-full px-5 py-3 m-2 rounded-2xl bg-red-600 text-white">
-            قطع دسترسی کاربر به پیام رسان
-          </button> */}
           <div className="flex items-center justify-start">
             <label
               htmlFor="vue-checkbox-list"
@@ -139,8 +149,7 @@ export default function FormEditUser() {
 
             <input
               id="vue-checkbox-list"
-             type="checkbox"
-             
+              type="checkbox"
               className="w-5 h-5 mx-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
             />
           </div>
