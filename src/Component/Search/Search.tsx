@@ -17,7 +17,7 @@ export default function Search() {
           <IoMdArrowRoundBack />
         </span>
         <Fade className="w-11/12 pb-20" delay={200}>
-        <div dir='rtl' className="w-full flex items-center bg-white rounded-xl p-6 border border-gray-300">
+        <div dir='rtl' className="w-full flex items-center bg-white rounded-xl md:p-6 p-3 border border-gray-300">
             <span className='text-3xl ml-2'><FcSearch/></span>
             <input placeholder=' عبارت مورد نظر خود را وارد کنید' className='w-full bg-transparent focus:outline-none'/>
            

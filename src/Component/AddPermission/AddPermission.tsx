@@ -1,6 +1,8 @@
 import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import AddNewPermission from "./AddNewPermission";
+import ListPermission from "./ListPermission";
 export default function AddPermission() {
   const navigate = useNavigate();
   return (
@@ -24,6 +26,13 @@ export default function AddPermission() {
             کنید
           .این عمل برای حفظ محرمانگی شما تایین شده است دقت داشته باشید انتخاب سطح دسترسی اجباری نیست و میتواند تایین نگردد
           </p>
+          <div>
+            <AddNewPermission/>
+          </div>
+          <div className="border-t-4 mt-4">
+            <h3 className="text-2xl font-black p-2 my-2">لیست دسترسی های موجود:</h3>
+            <ListPermission/>
+          </div>
         </div>
       </div>
     </div>
