@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { useStore } from "../../Store/Store";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const { username, setUsername, passwordUser, setPasswordUser } = useStore();
+  const Loginfun = () => {
+    setUsername(userName);
+    setPasswordUser(password);
+  };
+
+  useEffect(() => {
+    if (username && passwordUser) {
+      console.log(username, passwordUser);
+    }
+  }, [username, passwordUser]);
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex">
       <div className="flex flex-col image-bg-login items-center justify-center  lg:w-1/4 w-2/3 mx-auto h-2/3 my-auto rounded-lg ">
@@ -30,12 +42,18 @@ export default function Login() {
           >
             <input
               type="text"
+              value={userName}
+              onChange={(e) => {
+                let name = e.target.value;
+                setUserName(name);
+              }}
               placeholder="نام کاربری"
               className="border w-full  border-gray-400 rounded-lg px-4 py-2  focus:outline-none focus:border-blue-500"
               required
             />
             <div className="flex justify-between items-center mt-4 border bg-white w-full  border-gray-400 rounded-lg px-4 py-2  focus:outline-none focus:border-blue-500">
               <input
+                value={password}
                 className="w-full focus:outline-none border-none outline-none"
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -58,7 +76,10 @@ export default function Login() {
               </span>
             </div>
 
-            <button className="mt-4 bg-green-700 w-full mx-auto text-white rounded-md px-4 py-2">
+            <button
+              onClick={Loginfun}
+              className="mt-4 bg-green-700 w-full mx-auto text-white rounded-md px-4 py-2"
+            >
               ورود
             </button>
           </form>

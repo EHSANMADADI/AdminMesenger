@@ -4,6 +4,7 @@ import { Fade } from "react-awesome-reveal";
 export default function FormEditUser() {
   const [name, setName] = useState("احسان مددی");
   const [phoneNumber, setPhoneNumber] = useState("09126508968");
+  const [password, setPassword] = useState("123456");
 
   return (
     <div dir="rtl" className="w-4/5">
@@ -50,6 +51,25 @@ export default function FormEditUser() {
               }}
               inputMode="numeric"
               title="شماره تلفن باید با 09 شروع شده و 11 رقم باشد."
+              required
+            />
+          </div>
+        </Fade>
+        <Fade delay={400}>
+          <div className="mb-5">
+            <label className="font-bold mt-5" htmlFor="password">
+              رمز عبور
+            </label>
+            <input
+              className="w-full mt-3 py-2 px-5 border rounded-lg focus:outline-none"
+              type="text"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => {
+                const val = e.target.value;
+                setPassword(val);
+              }}
               required
             />
           </div>

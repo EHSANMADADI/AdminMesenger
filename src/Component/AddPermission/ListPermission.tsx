@@ -5,8 +5,8 @@ import Swal from "sweetalert2";
 import { useStore } from "../../Store/Store"; // مسیر درست به فایل zustand store خودتون رو قرار بدید
 
 export default function ListPermission() {
-  const { PermissionList,removePermission } = useStore(); // استفاده از useStore به جای useState
-  
+  const { PermissionList, removePermission } = useStore(); // استفاده از useStore به جای useState
+
   const deletItem = (id: number) => {
     Swal.fire({
       title: "آیا میخواهید این دسترسی را حذف کنید ؟",
@@ -17,12 +17,13 @@ export default function ListPermission() {
       cancelButtonText: "خیر",
       confirmButtonText: "بله",
     }).then((res) => {
-      if (res.isConfirmed)
-        removePermission(id)
+      if (res.isConfirmed) {
+        removePermission(id);
         Swal.fire({
           title: " با موفقیت حذف شد",
           icon: "success",
         });
+      }
     });
   };
 
