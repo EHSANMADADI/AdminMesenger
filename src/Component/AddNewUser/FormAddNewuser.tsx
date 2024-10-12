@@ -45,73 +45,105 @@ export default function FormAddNewuser() {
         </Fade>
         <Fade delay={350}>
           <div className="mb-5">
-            <span className="font-black mb-5">انواع دسترسی ها</span>
-            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
-              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+            <span className="font-black">انواع دسترسی ها</span>
+            <div className="grid mt-3 grid-cols-1 sm:grid-cols-4 gap-4 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <div className=" border-gray-200 sm:border-b-0 sm:border-r">
                 <div className="flex items-center ps-3">
                   <input
-                    id="vue-checkbox-list"
+                    id="access-one"
                     type="checkbox"
                     value=""
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="vue-checkbox-list"
+                    htmlFor="access-one"
                     className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                   >
                     دسترسی یک
                   </label>
                 </div>
-              </li>
-              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+              </div>
+              <div className=" border-gray-200 sm:border-b-0">
                 <div className="flex items-center ps-3">
                   <input
-                    id="vue-checkbox-list"
+                    id="access-one"
                     type="checkbox"
                     value=""
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="vue-checkbox-list"
+                    htmlFor="access-one"
                     className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                   >
-                    دسترسی دو
+                    دسترسی یک
                   </label>
                 </div>
-              </li>
-              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+              </div>
+              <div className=" border-gray-200 sm:border-b-0 ">
                 <div className="flex items-center ps-3">
                   <input
-                    id="vue-checkbox-list"
+                    id="access-one"
                     type="checkbox"
                     value=""
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="vue-checkbox-list"
+                    htmlFor="access-one"
                     className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                   >
-                    دسترسی سه
+                    دسترسی یک
                   </label>
                 </div>
-              </li>
-              <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+              </div>
+              <div className=" border-gray-200 sm:border-b-0">
                 <div className="flex items-center ps-3">
                   <input
-                    id="vue-checkbox-list"
+                    id="access-one"
                     type="checkbox"
                     value=""
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="vue-checkbox-list"
+                    htmlFor="access-one"
                     className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                   >
-                    دسترسی چهار
+                    دسترسی یک
                   </label>
                 </div>
-              </li>
-            </ul>
+              </div>
+              <div className=" border-gray-200 sm:border-b-0 ">
+                <div className="flex items-center ps-3">
+                  <input
+                    id="access-one"
+                    type="checkbox"
+                    value=""
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor="access-one"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    دسترسی یک
+                  </label>
+                </div>
+              </div>
+              <div className=" border-gray-200 sm:border-b-0">
+                <div className="flex items-center ps-3">
+                  <input
+                    id="access-one"
+                    type="checkbox"
+                    value=""
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor="access-one"
+                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                  >
+                    دسترسی یک
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </Fade>
 
@@ -147,13 +179,12 @@ export default function FormAddNewuser() {
           <label className="font-bold" htmlFor="picture">
             تصویر نمایه
           </label>
-      
-            <input
-              className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2
-           bg-gray-200"
-              type="file"
-            />
 
+          <input
+            className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2
+           bg-gray-200"
+            type="file"
+          />
         </Fade>
 
         <Fade delay={500}>
