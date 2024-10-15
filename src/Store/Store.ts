@@ -1,23 +1,25 @@
 import { create } from "zustand";
 
 type StoreState = {
-  PermissionList: { name: string; active: boolean }[];
-  addPermission: (permission: { name: string; active: boolean }) => void;
+  PermissionList: { name: string; active: boolean; id: number }[];
+  addPermission: (permission: { name: string; active: boolean; id: number }) => void;
   removePermission: (index: number) => void;
-  ///////////
-  listTypeOfseve:string[];
-  setListTypeOfseve:(value:string) => void;
-  removeListTypeOfseve:(value:any) => void;
+  setPermissionss: (permissions: { name: string; active: boolean; id: number }[]) => void; // اضافه شده
 
-  // Default Save Type
+  // لیست نوع‌های ذخیره
+  listTypeOfseve: string[];
+  setListTypeOfseve: (value: string) => void;
+  removeListTypeOfseve: (value: any) => void;
+
+  // نوع پیش‌فرض ذخیره‌سازی
   defaultSaveType: number;
   setDefaultSaveType: (value: number) => void;
 
-  // Type of Saved List
+  // لیست نوع‌های ذخیره‌شده
   TypeOfSavedList: number[];
   setTypeOfSavedList: (value: number[]) => void;
 
-  // User-related state
+  // اطلاعات کاربر
   username: string;
   setUsername: (name: string) => void;
 
@@ -27,7 +29,7 @@ type StoreState = {
   userId: any;
   setUserId: (userId: any) => void;
 
-  // Active state
+  // وضعیت فعال
   active: boolean;
   setActive: (active: boolean) => void;
 };
@@ -37,34 +39,46 @@ export const useStore = create<StoreState>((set) => ({
     {
       name: "دسترسی به بخش امنیت",
       active: false,
+      id: 0,
     },
   ],
+
   addPermission: (permission) =>
-    set((state) => ({ PermissionList: [...state.PermissionList, permission] })),
+    set((state) => ({
+      PermissionList: [...state.PermissionList, permission],
+    })),
+
   removePermission: (index) =>
     set((state) => ({
-      PermissionList: state.PermissionList.filter((_, i) => i !== index),
+      PermissionList: state.PermissionList.filter((item) => item.id !== index),
+    })),
+
+  // تابع جدید برای تنظیم لیست پرمیژن‌ها
+  setPermissionss: (permissions) =>
+    set(() => ({
+      PermissionList: permissions,
     })),
 
   // Default Save Type
   defaultSaveType: 0,
-  setDefaultSaveType: (value) =>
-    set(() => ({ defaultSaveType: value })),
+  setDefaultSaveType: (value) => set(() => ({ defaultSaveType: value })),
 
   // Type of Saved List
   TypeOfSavedList: [],
   setTypeOfSavedList: (value) => set(() => ({ TypeOfSavedList: value })),
-  ///////this method for saved list og seave type befor createPermissions
-  listTypeOfseve:[],
-  setListTypeOfseve:(value) => set((state)=>({
-    listTypeOfseve:[...state.listTypeOfseve,value]
-  })),
-  removeListTypeOfseve: (index: any) => set((state) => ({
-    listTypeOfseve: state.listTypeOfseve.filter((_, i) => i !== index)
-  })),
-  
 
-  // User-related state
+  // ذخیره‌سازی لیست نوع‌های قبل از ایجاد پرمیژن
+  listTypeOfseve: [],
+  setListTypeOfseve: (value) =>
+    set((state) => ({
+      listTypeOfseve: [...state.listTypeOfseve, value],
+    })),
+  removeListTypeOfseve: (index: any) =>
+    set((state) => ({
+      listTypeOfseve: state.listTypeOfseve.filter((_, i) => i !== index),
+    })),
+
+  // اطلاعات کاربر
   username: "",
   setUsername: (name) => set(() => ({ username: name })),
   passwordUser: "",
@@ -72,7 +86,7 @@ export const useStore = create<StoreState>((set) => ({
   userId: "",
   setUserId: (userId) => set(() => ({ userId })),
 
-  // Active state
+  // وضعیت فعال
   active: false,
   setActive: (active) => set(() => ({ active })),
 }));

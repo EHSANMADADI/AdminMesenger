@@ -4,7 +4,7 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { useStore } from "../../Store/Store";
 export default function FormAddNewuser() {
-  const { userId, PermissionList, addPermission } = useStore();
+  const { userId, PermissionList, addPermission,setPermissionss } = useStore();
   const [fullName, setFullname] = useState("");
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");
@@ -82,12 +82,16 @@ export default function FormAddNewuser() {
       })
       .then((response) => {
         console.log(response.data);
+        const newListPermission = response.data.map(
+          (item: { title: string; permissionId: number }) => {
+            return { name: item.title, active: true, id: item.permissionId };
+          }
+        );
+        setPermissionss(newListPermission)
 
-        response.data.map((item: { title: string }) => {
-          addPermission({ name: item.title, active: true });
-        });
+       
       });
-  },[]);
+  }, []);
 
   return (
     <div dir="rtl" className="w-4/5">
@@ -146,7 +150,10 @@ export default function FormAddNewuser() {
             <div className="grid mt-3 grid-cols-1 sm:grid-cols-4 gap-4 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
               {PermissionList.map((item, index) => {
                 return (
-                  <div key={index} className=" border-gray-200 sm:border-b-0 sm:border-r">
+                  <div
+                    key={index}
+                    className=" border-gray-200 sm:border-b-0 sm:border-r"
+                  >
                     <div className="flex items-center ps-3">
                       <input
                         id={item.name}

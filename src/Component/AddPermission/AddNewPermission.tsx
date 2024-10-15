@@ -34,7 +34,7 @@ export default function AddNewPermission() {
               });
               console.log(response);
               setPermissions("");
-              addPermission({ name: newPermission, active: true });
+              addPermission({ name: newPermission, active: true,id:response.data.id });
             })
             .catch((err) => {
               alert(err);
