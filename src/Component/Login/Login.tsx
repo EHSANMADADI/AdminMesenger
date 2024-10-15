@@ -3,14 +3,44 @@ import { FaUsers } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import api from "../../Config/api";
+
 export default function Login() {
+  const navigate=useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const { username, setUsername, passwordUser, setPasswordUser } = useStore();
+  const { username, setUsername, passwordUser, setPasswordUser,setActive } = useStore();
   const Loginfun = () => {
-    setUsername(userName);
-    setPasswordUser(password);
+    api
+      .post("/Home/Login", { username: userName, password: password })
+      .then((res) => {
+        setUsername(userName);
+        setPasswordUser(password);        
+        if(res.data.isAdmin && res.data.isCorrect){
+          setActive(true);
+          navigate('/Admin')
+        }
+        else{
+          Swal.fire({
+            title: "شما اجازه ورود ندارید",
+            icon: "error",
+          });
+        }
+        
+      })
+      .catch((err) => {
+        console.log(userName,password);
+        console.log(err);
+        
+        Swal.fire({
+          title: "نام کاربری یا رمز عبور اشتباه است ",
+          icon: "error",
+        });
+      });
   };
 
   useEffect(() => {
@@ -18,6 +48,7 @@ export default function Login() {
       console.log(username, passwordUser);
     }
   }, [username, passwordUser]);
+
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex">
       <div className="flex flex-col image-bg-login items-center justify-center  lg:w-1/4 w-2/3 mx-auto h-2/3 my-auto rounded-lg ">
@@ -47,6 +78,7 @@ export default function Login() {
                 let name = e.target.value;
                 setUserName(name);
               }}
+              
               placeholder="نام کاربری"
               className="border w-full  border-gray-400 rounded-lg px-4 py-2  focus:outline-none focus:border-blue-500"
               required

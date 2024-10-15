@@ -3,6 +3,8 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import AddNewPermission from "./AddNewPermission";
 import ListPermission from "./ListPermission";
+import StorageType from "./StorageType";
+import ListTypeStorageType from "./ListTypeStorageType";
 export default function AddPermission() {
   const navigate = useNavigate();
   return (
@@ -29,10 +31,21 @@ export default function AddPermission() {
           <div>
             <AddNewPermission/>
           </div>
+          <p className="text-gray-500 p-2 border-b font-bold text-lg">
+                   در این قسمت شما میتوانید نوع ذخیره سازی پیام را در هر دسترسی تاییین کنید 
+          </p>
+          <p className="text-gray-500 p-2 border-b font-bold text-lg">
+            هر دسترسی یک نوع ذخیره سازی پیشفرض و دارد و میتواند چندیدن نوع ذخیره سازی دیگر هم به عنوان آپشن داشته باشد  
+          </p>
+          <StorageType/>
+          <div className="border-t-4 mt-3">
+            <ListTypeStorageType/>
+          </div>
           <div className="border-t-4 mt-4">
             <h3 className="text-2xl font-black p-2 my-2">لیست دسترسی های موجود:</h3>
             <ListPermission/>
           </div>
+          
         </div>
       </div>
     </div>
