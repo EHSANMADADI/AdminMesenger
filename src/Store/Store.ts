@@ -2,9 +2,15 @@ import { create } from "zustand";
 
 type StoreState = {
   PermissionList: { name: string; active: boolean; id: number }[];
-  addPermission: (permission: { name: string; active: boolean; id: number }) => void;
+  addPermission: (permission: {
+    name: string;
+    active: boolean;
+    id: number;
+  }) => void;
   removePermission: (index: number) => void;
-  setPermissionss: (permissions: { name: string; active: boolean; id: number }[]) => void; // اضافه شده
+  setPermissionss: (
+    permissions: { name: string; active: boolean; id: number }[]
+  ) => void; // اضافه شده
 
   // لیست نوع‌های ذخیره
   listTypeOfseve: string[];
@@ -37,7 +43,7 @@ type StoreState = {
 export const useStore = create<StoreState>((set) => ({
   PermissionList: [
     {
-      name: "دسترسی به بخش امنیت",
+      name: "",
       active: false,
       id: 0,
     },

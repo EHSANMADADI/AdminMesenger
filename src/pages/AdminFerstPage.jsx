@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react';
 import AdminItems from '../Component/AdminItems';
 import { FaUsersViewfinder } from "react-icons/fa6";
@@ -16,6 +17,7 @@ import NotFound from '../Component/NotFound';
 export default function AdminFerstPage() {
     const { username, setUserId, active } = useStore()
     const [name, setName] = useState('')
+    const [img, setImg]=useState('')
     const navigate = useNavigate();
     useEffect(() => {
         console.log(username);
@@ -25,6 +27,9 @@ export default function AdminFerstPage() {
             setName(res.data.userFullname)
             console.log(res.data.userId);
             setUserId(res.data.userId)
+            console.log(res.data.userAvatar);
+            
+            setImg(res.data.userAvatar)
         }).catch((err) => {
             console.log(err);
         })
@@ -46,7 +51,10 @@ export default function AdminFerstPage() {
             {active ? (<div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex">
 
                 <div className='flex flex-wrap w-2/3 mx-auto image-bg-login max-h-full h-4/3 my-auto rounded-lg justify-between p-5 overflow-auto '>
-                    <div className='flex justify-center w-full m-5 text-xl font-black border-b-2 p-2'>{name}</div>
+                    <div className='flex justify-center items-center w-full m-5 text-3xl font-black border-b-2 p-2'>{name}
+                    {img && <img className='m-2 w-16 h-16 border-2 bg-gray-300 border-gray-400 rounded-full' src={`https://195.191.45.56:5155/uploads/${img}`} alt='user Avatar' />}
+
+                    </div>
                     <div className='w-full flex justify-between flex-wrap'>
                         <Fade className='md:w-5/12 w-full' delay={100}>
                             <div className=' my-2 rounded-lg cursor-pointer hover:scale-105 duration-200'>
