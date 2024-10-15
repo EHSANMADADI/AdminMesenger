@@ -1,41 +1,44 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import api from "../../Config/api";
+import Loader from "../Loader";
+import loadLogin from'../../Image/loader/tail-spin.svg'
 
 export default function Login() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const { username, setUsername, passwordUser, setPasswordUser,setActive } = useStore();
+  const [loader, setLoader] = useState(false);
+  const { username, setUsername, passwordUser, setPasswordUser, setActive } =
+    useStore();
   const Loginfun = () => {
+    setLoader(true);
     api
       .post("/Home/Login", { username: userName, password: password })
       .then((res) => {
         setUsername(userName);
-        setPasswordUser(password);        
-        if(res.data.isAdmin && res.data.isCorrect){
+        setPasswordUser(password);
+        if (res.data.isAdmin && res.data.isCorrect) {
           setActive(true);
-          navigate('/Admin')
-        }
-        else{
+          navigate("/Admin");
+        } else {
           Swal.fire({
             title: "شما اجازه ورود ندارید",
             icon: "error",
           });
         }
-        
       })
       .catch((err) => {
-        console.log(userName,password);
+        console.log(userName, password);
         console.log(err);
-        
+
         Swal.fire({
           title: "نام کاربری یا رمز عبور اشتباه است ",
           icon: "error",
@@ -78,7 +81,6 @@ export default function Login() {
                 let name = e.target.value;
                 setUserName(name);
               }}
-              
               placeholder="نام کاربری"
               className="border w-full  border-gray-400 rounded-lg px-4 py-2  focus:outline-none focus:border-blue-500"
               required
@@ -107,13 +109,20 @@ export default function Login() {
                 )}
               </span>
             </div>
-
-            <button
-              onClick={Loginfun}
-              className="mt-4 bg-green-700 w-full mx-auto text-white rounded-md px-4 py-2"
-            >
-              ورود
-            </button>
+            {!loader && (
+              <button
+                onClick={Loginfun}
+                className="mt-4 bg-green-700 w-full mx-auto text-white rounded-md px-4 py-2"
+              >
+                ورود
+              </button>
+            )}
+            {loader &&( <button className="mt-4 flex items-center justify-center bg-green-700 w-full mx-auto text-white text-base font-bold rounded-md px-4 py-2">لطفا صبر کنید
+                <span>
+                  <img src={loadLogin} className="w-6 h-6 m-1"/>
+                </span>
+              </button>)
+            }
           </form>
         </div>
       </div>
