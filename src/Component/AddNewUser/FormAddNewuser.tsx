@@ -4,7 +4,7 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { useStore } from "../../Store/Store";
 export default function FormAddNewuser() {
-  const { userId } = useStore();
+  const { userId, PermissionList, addPermission } = useStore();
   const [fullName, setFullname] = useState("");
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");
@@ -73,13 +73,21 @@ export default function FormAddNewuser() {
       });
   };
 
+  useEffect(() => {
+    api
+      .get("/Admin/listPermissions", {
+        headers: {
+          userId: userId,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
 
-  // useEffect(()=>{
-  //   api.get('/Admin/listPermissions',{}).then((response) => {
-  //     console.log(response);
-      
-  //   })
-  // },[])
+        response.data.map((item: { title: string }) => {
+          addPermission({ name: item.title, active: true });
+        });
+      });
+  },[]);
 
   return (
     <div dir="rtl" className="w-4/5">
@@ -136,74 +144,27 @@ export default function FormAddNewuser() {
           <div className="mb-5">
             <span className="font-black">انواع دسترسی ها</span>
             <div className="grid mt-3 grid-cols-1 sm:grid-cols-4 gap-4 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
-              <div className=" border-gray-200 sm:border-b-0 sm:border-r">
-                <div className="flex items-center ps-3">
-                  <input
-                    id="access-one"
-                    type="checkbox"
-                    value="دسترسی صفر"
-                    onChange={handlePermissionChange} // تابع برای تغییر دسترسی
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="access-one"
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                  >
-                    دسترسی صفر
-                  </label>
-                </div>
-              </div>
-              <div className=" border-gray-200 sm:border-b-0">
-                <div className="flex items-center ps-3">
-                  <input
-                    id="access-one"
-                    type="checkbox"
-                    value="دسترسی یک"
-                    onChange={handlePermissionChange}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="access-one"
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                  >
-                    دسترسی یک
-                  </label>
-                </div>
-              </div>
-              <div className=" border-gray-200 sm:border-b-0 ">
-                <div className="flex items-center ps-3">
-                  <input
-                    id="access-one"
-                    type="checkbox"
-                    value="دسترسی دو"
-                    onChange={handlePermissionChange}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="access-two"
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                  >
-                    دسترسی دو
-                  </label>
-                </div>
-              </div>
-              <div className=" border-gray-200 sm:border-b-0">
-                <div className="flex items-center ps-3">
-                  <input
-                    id="access-one"
-                    type="checkbox"
-                    value="دسترسی سه"
-                    onChange={handlePermissionChange}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="access-three"
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                  >
-                    دسترسی سه
-                  </label>
-                </div>
-              </div>
+              {PermissionList.map((item, index) => {
+                return (
+                  <div key={index} className=" border-gray-200 sm:border-b-0 sm:border-r">
+                    <div className="flex items-center ps-3">
+                      <input
+                        id={item.name}
+                        type="checkbox"
+                        value={item.name}
+                        onChange={handlePermissionChange} // تابع برای تغییر دسترسی
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <label
+                        htmlFor={item.name}
+                        className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >
+                        {item.name}
+                      </label>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Fade>

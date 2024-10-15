@@ -4,7 +4,7 @@ import { useStore } from "../../Store/Store";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 export default function AddNewPermission() {
-  const { userId } = useStore();
+  const { userId, addPermission } = useStore();
   const [Permission, setPermissions] = useState("");
   return (
     <div className="flex items-center px-5 bg-white rounded-md border-2">
@@ -29,11 +29,12 @@ export default function AddNewPermission() {
             )
             .then((response) => {
               Swal.fire({
-                title:'دسترسی جدید اضافه شد',
-                icon:"success"
-              })
+                title: "دسترسی جدید اضافه شد",
+                icon: "success",
+              });
               console.log(response);
               setPermissions("");
+              addPermission({ name: newPermission, active: true });
             })
             .catch((err) => {
               alert(err);
