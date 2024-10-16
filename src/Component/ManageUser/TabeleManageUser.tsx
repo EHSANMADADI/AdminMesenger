@@ -20,7 +20,7 @@ interface User {
 
 export default function TabeleManageUser() {
   const navigate = useNavigate();
-  const { userId } = useStore();
+  const userId=localStorage.getItem('userId')
   const [pageination, setPageination] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
   const [totalCount, setTotalCount] = useState(0); // Track total number of users

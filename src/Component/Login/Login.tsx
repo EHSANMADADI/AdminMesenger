@@ -25,6 +25,7 @@ export default function Login() {
       .then((res) => {
         setUsername(userName);
         setPasswordUser(password);
+        localStorage.setItem("username", userName);
         if (res.data.isAdmin && res.data.isCorrect) {
           setActive(true);
           navigate("/Admin");
@@ -46,11 +47,7 @@ export default function Login() {
       });
   };
 
-  useEffect(() => {
-    if (username && passwordUser) {
-      console.log(username, passwordUser);
-    }
-  }, [username, passwordUser]);
+ 
 
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex">

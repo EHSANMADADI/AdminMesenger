@@ -15,32 +15,37 @@ import { useStore } from '../Store/Store';
 import NotFound from '../Component/NotFound';
 
 export default function AdminFerstPage() {
-    const { username, setUserId, active } = useStore()
+    const { setUserId, active,setActive } = useStore()
     const [name, setName] = useState('')
-    const [img, setImg]=useState('')
+    const [img, setImg] = useState('')
     const navigate = useNavigate();
+    const username = localStorage.getItem('username')
     useEffect(() => {
         console.log(username);
+        if (username) {
+            setActive(true)
+            api.get(`/Home/validUser?username=${username}`).then((res) => {
+                console.log(res);
+                setName(res.data.userFullname)
+                console.log(res.data.userId);
+                setUserId(res.data.userId)
+                localStorage.setItem('userId', res.data.userId)
+                console.log(res.data.userAvatar);
 
-        api.get(`/Home/validUser?username=${username}`).then((res) => {
-            console.log(res);
-            setName(res.data.userFullname)
-            console.log(res.data.userId);
-            setUserId(res.data.userId)
-            console.log(res.data.userAvatar);
-            
-            setImg(res.data.userAvatar)
-        }).catch((err) => {
-            console.log(err);
-        })
-    },[]);
-
-
-    useEffect(() => {
-        if (!active) {
+                setImg(res.data.userAvatar)
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
+        else{
+            setActive(false)
             navigate('/')
         }
-    }, [])
+       
+    }, []);
+
+
+  
 
 
 
@@ -52,7 +57,7 @@ export default function AdminFerstPage() {
 
                 <div className='flex flex-wrap w-2/3 mx-auto image-bg-login max-h-full h-4/3 my-auto rounded-lg justify-between p-5 overflow-auto '>
                     <div className='flex justify-center items-center w-full m-5 text-3xl font-black border-b-2 p-2'>{name}
-                    {img && <img className='m-2 w-16 h-16 border-2 bg-gray-300 border-gray-400 rounded-full' src={`https://195.191.45.56:5155/uploads/${img}`} alt='user Avatar' />}
+                        {img && <img className='m-2 w-16 h-16 border-2 bg-gray-300 border-gray-400 rounded-full' src={`https://195.191.45.56:5155/uploads/${img}`} alt='user Avatar' />}
 
                     </div>
                     <div className='w-full flex justify-between flex-wrap'>
@@ -91,6 +96,8 @@ export default function AdminFerstPage() {
                                 confirmButtonText: "بله خارج شو"
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    localStorage.removeItem('username');
+                                    localStorage.removeItem('userId');
                                     navigate('/')
                                     Swal.fire({
                                         title: "از حساب کاربری خود خارج شدید",

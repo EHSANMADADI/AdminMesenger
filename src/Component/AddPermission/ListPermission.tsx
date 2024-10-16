@@ -7,8 +7,8 @@ import { FaEdit } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
 
 export default function ListPermission() {
-  const { PermissionList, removePermission, userId, setPermissionss } = useStore(); // استفاده از setPermissions
-
+  const { PermissionList, removePermission, setPermissionss } = useStore(); // استفاده از setPermissions
+  const userId=localStorage.getItem('userId')
   useEffect(() => {
     api
       .get("/Admin/listPermissions", {

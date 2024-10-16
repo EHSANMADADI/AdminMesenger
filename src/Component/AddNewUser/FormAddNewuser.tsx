@@ -4,7 +4,8 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { useStore } from "../../Store/Store";
 export default function FormAddNewuser() {
-  const { userId, PermissionList, addPermission, setPermissionss } = useStore();
+  const { PermissionList, addPermission, setPermissionss } = useStore();
+  const userId=localStorage.getItem('userId')
   const [fullName, setFullname] = useState("");
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");

@@ -92,7 +92,9 @@ export const useStore = create<StoreState>((set) => ({
 
   // اطلاعات کاربر
   username: "",
-  setUsername: (name) => set(() => ({ username: name })),
+  setUsername: (name) => set(() => ({ 
+    username: name
+   })),
   passwordUser: "",
   setPasswordUser: (password) => set(() => ({ passwordUser: password })),
   userId: "",

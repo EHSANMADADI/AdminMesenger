@@ -4,7 +4,8 @@ import { useStore } from "../../Store/Store";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 export default function AddNewPermission() {
-  const { userId, addPermission, saveTypeIds, defaultSaveType } = useStore();
+  const {  addPermission, saveTypeIds, defaultSaveType } = useStore();
+  const userId=localStorage.getItem('userId')
   const [Permission, setPermissions] = useState("");
   return (
     <div className="flex items-center px-5 bg-white rounded-md border-2">
