@@ -22,8 +22,8 @@ type StoreState = {
   setDefaultSaveType: (value: number) => void;
 
   // لیست نوع‌های ذخیره‌شده
-  TypeOfSavedList: number[];
-  setTypeOfSavedList: (value: number[]) => void;
+  saveTypeIds: number[];
+  setSaveTypeIds: (value: number) => void;
 
   // اطلاعات کاربر
   username: string;
@@ -69,11 +69,17 @@ export const useStore = create<StoreState>((set) => ({
   defaultSaveType: 0,
   setDefaultSaveType: (value) => set(() => ({ defaultSaveType: value })),
 
-  // Type of Saved List
-  TypeOfSavedList: [],
-  setTypeOfSavedList: (value) => set(() => ({ TypeOfSavedList: value })),
+  //  
+  saveTypeIds: [],
+  setSaveTypeIds: (value: number) =>
+    set((state) => ({
+      saveTypeIds: [...state.saveTypeIds, value],
+    })),
+  
+  
+  
 
-  // ذخیره‌سازی لیست نوع‌های قبل از ایجاد پرمیژن
+  //
   listTypeOfseve: [],
   setListTypeOfseve: (value) =>
     set((state) => ({

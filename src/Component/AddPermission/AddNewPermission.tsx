@@ -4,7 +4,7 @@ import { useStore } from "../../Store/Store";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 export default function AddNewPermission() {
-  const { userId, addPermission } = useStore();
+  const { userId, addPermission, saveTypeIds, defaultSaveType } = useStore();
   const [Permission, setPermissions] = useState("");
   return (
     <div className="flex items-center px-5 bg-white rounded-md border-2">
@@ -12,14 +12,16 @@ export default function AddNewPermission() {
         onClick={() => {
           const newPermission = Permission;
           console.log(Permission);
-          console.log(userId);
+          console.log("defalt=>", defaultSaveType);
+          console.log("list seave tipeId", saveTypeIds);
+
           api
             .post(
               "/Admin/createPermission ",
               {
                 title: newPermission,
-                defaultSaveType: 4,
-                saveTypeIds: [2, 3, 4],
+                defaultSaveType: defaultSaveType,
+                saveTypeIds: saveTypeIds,
               },
               {
                 headers: {
@@ -34,7 +36,11 @@ export default function AddNewPermission() {
               });
               console.log(response);
               setPermissions("");
-              addPermission({ name: newPermission, active: true,id:response.data.id });
+              addPermission({
+                name: newPermission,
+                active: true,
+                id: response.data.id,
+              });
             })
             .catch((err) => {
               alert(err);
