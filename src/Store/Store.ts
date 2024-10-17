@@ -1,15 +1,22 @@
 import { create } from "zustand";
 
 type StoreState = {
-  PermissionList: { name: string; active: boolean; id: number }[];
+  PermissionList: { name: string; active: boolean; id: number,storageList:{saveTypeId:number,client:string,server:string}[] }[];
   addPermission: (permission: {
+    storageList: never[];
     name: string;
     active: boolean;
     id: number;
   }) => void;
   removePermission: (index: number) => void;
   setPermissionss: (
-    permissions: { name: string; active: boolean; id: number }[]
+    permissions: {
+      storageList: { saveTypeId: number; client: string; server: string }[];
+      name: string;
+      active: boolean;
+      id: number;
+    }[]
+  
   ) => void; // اضافه شده
 
   // لیست نوع‌های ذخیره
@@ -38,6 +45,12 @@ type StoreState = {
   // وضعیت فعال
   active: boolean;
   setActive: (active: boolean) => void;
+
+
+
+  //////
+  idTable:number,
+  setIdTable:(value:number)=>void
 };
 
 export const useStore = create<StoreState>((set) => ({
@@ -46,12 +59,19 @@ export const useStore = create<StoreState>((set) => ({
       name: "",
       active: false,
       id: 0,
+      storageList: [], // اینجا باید به جای saveTypes از storageList استفاده شود
     },
   ],
 
   addPermission: (permission) =>
     set((state) => ({
-      PermissionList: [...state.PermissionList, permission],
+      PermissionList: [
+        ...state.PermissionList,
+        {
+          ...permission,
+          storageList: permission.storageList || [], // اضافه کردن storageList به پرمیژن
+        },
+      ],
     })),
 
   removePermission: (index) =>
@@ -62,24 +82,22 @@ export const useStore = create<StoreState>((set) => ({
   // تابع جدید برای تنظیم لیست پرمیژن‌ها
   setPermissionss: (permissions) =>
     set(() => ({
-      PermissionList: permissions,
+      PermissionList: permissions.map(permission => ({
+        ...permission,
+        storageList: permission.storageList || [], // اضافه کردن storageList در صورت نبودن
+      })),
     })),
 
   // Default Save Type
   defaultSaveType: 0,
   setDefaultSaveType: (value) => set(() => ({ defaultSaveType: value })),
 
-  //  
   saveTypeIds: [],
   setSaveTypeIds: (value: number) =>
     set((state) => ({
       saveTypeIds: [...state.saveTypeIds, value],
     })),
-  
-  
-  
 
-  //
   listTypeOfseve: [],
   setListTypeOfseve: (value) =>
     set((state) => ({
@@ -92,9 +110,7 @@ export const useStore = create<StoreState>((set) => ({
 
   // اطلاعات کاربر
   username: "",
-  setUsername: (name) => set(() => ({ 
-    username: name
-   })),
+  setUsername: (name) => set(() => ({ username: name })),
   passwordUser: "",
   setPasswordUser: (password) => set(() => ({ passwordUser: password })),
   userId: "",
@@ -103,4 +119,8 @@ export const useStore = create<StoreState>((set) => ({
   // وضعیت فعال
   active: false,
   setActive: (active) => set(() => ({ active })),
+
+  idTable:0,
+  setIdTable:(value)=>set(() => ({ idTable:value}))
 }));
+

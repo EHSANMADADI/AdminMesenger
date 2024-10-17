@@ -44,6 +44,7 @@ export default function Login() {
           title: "نام کاربری یا رمز عبور اشتباه است ",
           icon: "error",
         });
+        setLoader(false);
       });
   };
 

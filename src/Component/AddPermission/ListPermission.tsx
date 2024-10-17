@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineDone } from "react-icons/md";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import Swal from "sweetalert2";
 import api from "../../Config/api";
 import { FaEdit } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 export default function ListPermission() {
   const { PermissionList, removePermission, setPermissionss } = useStore(); // استفاده از setPermissions
   const userId=localStorage.getItem('userId')
+  const navigate=useNavigate()
+  const [loading, setLoading] =useState(true);
   useEffect(() => {
     api
       .get("/Admin/listPermissions", {
@@ -18,15 +22,17 @@ export default function ListPermission() {
       })
       .then((response) => {
         console.log(response.data);
-
         // استفاده از setPermissions برای تنظیم کل لیست پرمیژن‌ها
         setPermissionss(
-          response.data.map((item: { title: string; permissionId: number }) => ({
+          response.data.map((item: { title: string; permissionId: number,saveTypes:[{saveTypeId:number,server:string,client:string}] }) => ({
             name: item.title,
             active: true,
             id: item.permissionId,
+            storageList:item.saveTypes
+            
           }))
         );
+        setLoading(false); // بارگذاری تمام شده است
       });
   }, [userId, setPermissionss]);
 
@@ -60,7 +66,7 @@ export default function ListPermission() {
 
   return (
     <>
-      {PermissionList.map((permission, index) => (
+    {loading?(<Loader/>):( PermissionList.map((permission, index) => (
         <div
           key={index}
           className="flex justify-between items-center border-2 my-3 rounded-md bg-white p-1 cursor-pointer hover:bg-gray-300 duration-300"
@@ -72,7 +78,9 @@ export default function ListPermission() {
             <span className="text-xl p-2">{permission.name}</span>
           </div>
           <div className="flex items-center text-center justify-center">
-            <span className="text-xl p-3 text-center border m-1 text-blue-600 hover:bg-blue-200 rounded-full">
+            <span onClick={()=>{
+               navigate(`/Admin/EditPermission/${permission.id}`)
+            }} className="text-xl p-3 text-center border m-1 text-blue-600 hover:bg-blue-200 rounded-full">
               <FaEdit />
             </span>
             <span
@@ -83,7 +91,8 @@ export default function ListPermission() {
             </span>
           </div>
         </div>
-      ))}
+      )))}
+     
     </>
   );
 }

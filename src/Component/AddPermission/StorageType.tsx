@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { useStore } from "../../Store/Store";
@@ -9,7 +9,7 @@ const StorageType = () => {
   const [isOpenIncription, setIsOpenIncription] = useState(false);
   const [isOpenFullIncription, setIsOpenFullIncription] = useState(false);
   /////////////////////////
-  const [idTable, setIdTable] = useState(0);
+  // const [idTable, setIdTable] = useState(0);
   const [server, setServer] = useState("");
   const [user, setUser] = useState("");
   const [incription, setIncription] = useState("");
@@ -20,6 +20,8 @@ const StorageType = () => {
     setDefaultSaveType,
     defaultSaveType,
     setListTypeOfseve,
+    idTable,
+    setIdTable
   } = useStore();
   const addsaveType = () => {
     const saveType =
@@ -105,6 +107,11 @@ const StorageType = () => {
     setIncription("");
   };
   console.log(idTable);
+  useEffect(()=>{
+    return(()=>{
+      setIdTable(0)
+    })
+  },[])
 
   return (
     <div className=" my-5 w-full bg-white rounded-md p-5 flex items-center justify-between">

@@ -17,35 +17,37 @@ export default function AddNewPermission() {
           console.log("list seave tipeId", saveTypeIds);
 
           api
-            .post(
-              "/Admin/createPermission ",
-              {
-                title: newPermission,
-                defaultSaveType: defaultSaveType,
-                saveTypeIds: saveTypeIds,
+          .post(
+            "/Admin/createPermission",
+            {
+              title: newPermission,
+              defaultSaveType: defaultSaveType,
+              saveTypeIds: saveTypeIds,
+            },
+            {
+              headers: {
+                userId: userId,
               },
-              {
-                headers: {
-                  userId: userId,
-                },
-              }
-            )
-            .then((response) => {
-              Swal.fire({
-                title: "دسترسی جدید اضافه شد",
-                icon: "success",
-              });
-              console.log(response);
-              setPermissions("");
-              addPermission({
-                name: newPermission,
-                active: true,
-                id: response.data.id,
-              });
-            })
-            .catch((err) => {
-              alert(err);
+            }
+          )
+          .then((response) => {
+            Swal.fire({
+              title: "دسترسی جدید اضافه شد",
+              icon: "success",
             });
+            console.log(response);
+            setPermissions("");
+            addPermission({
+              name: newPermission,
+              active: true,
+              id: response.data.id,
+              storageList: response.data.saveTypes || [], // تغییر به storageList
+            });
+          })
+          .catch((err) => {
+            alert(err);
+          });
+        
         }}
         className="p-2 border rounded-full cursor-pointer hover:bg-green-500 text-xl hover:text-white duration-200"
       >

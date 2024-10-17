@@ -3,6 +3,7 @@ import { useStore } from "../../Store/Store";
 
 export default function ListTypeStorageType() {
   const { listTypeOfseve, removeListTypeOfseve } = useStore();
+console.log(listTypeOfseve);
 
   return (
     <div>
