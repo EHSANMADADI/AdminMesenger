@@ -23,7 +23,7 @@ export default function ListPermission() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log('list->>>>>>>>>>',response.data);
         // استفاده از setPermissions برای تنظیم کل لیست پرمیژن‌ها
         setPermissionss(
           response.data.map((item: { title: string; permissionId: number,saveTypes:[{saveTypeId:number,server:string,client:string}] }) => ({
@@ -49,6 +49,7 @@ export default function ListPermission() {
       confirmButtonText: "بله",
     }).then((res) => {
       if (res.isConfirmed) {
+       setLoading(true)
         api
           .delete(`/Admin/deletePermission/${id}`, {
             headers: {
@@ -62,7 +63,14 @@ export default function ListPermission() {
               title: " با موفقیت حذف شد",
               icon: "success",
             });
-          });
+            setLoading(false)
+          }).catch((err)=>{
+            Swal.fire({
+              title:'مشکلی پیش آمده لطفا دوباره تلاش کنید',
+              icon:'error'
+            })
+           setLoading(false)
+          })
       }
     });
   };
@@ -78,6 +86,7 @@ export default function ListPermission() {
           <p>دسترسی وجود ندارد</p>
         </div>
       ) : (
+      
         PermissionList.map((permission, index) => (
           <div
             key={index}
