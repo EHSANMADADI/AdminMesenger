@@ -13,6 +13,7 @@ type StoreState = {
 
   defaultSaveType: number;
   setDefaultSaveType: (value: number) => void;
+  // removeDefalt:()=>void
 
   saveTypeIds: number[];
   setSaveTypeIds: (value: number) => void;

@@ -16,7 +16,7 @@ export default function AddPermission() {
           }}
           className="text-black text-2xl p-2 rounded-full border cursor-pointer hover:bg-gray-300 duration-300 h-11"
         >
-          <IoMdArrowRoundBack />
+          <IoMdArrowRoundBack/>
         </span>
 
         <div dir="rtl" className=" w-5/6">

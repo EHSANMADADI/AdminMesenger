@@ -11,7 +11,7 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 
 export default function EditPermission() {
-  const { PermissionList, setPermissionss, idTable, setIdTable } = useStore();
+  const { PermissionList, setPermissionss, idTable, setIdTable,removeAllListTypeOfSave } = useStore();
   const { Id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
@@ -19,6 +19,8 @@ export default function EditPermission() {
   const selectedPermission = Id
     ? PermissionList.find((permission) => permission.id === parseInt(Id))
     : null;
+    console.log('selected',selectedPermission);
+    
 
   // استفاده از useState برای مدیریت مقدار input
   const [name, setName] = useState(selectedPermission?.name || "");
@@ -120,6 +122,7 @@ export default function EditPermission() {
           title: "عملیات با موفقیت انجام شد",
           icon: "success",
         });
+        removeAllListTypeOfSave()
       })
       .catch((err) => {
         Swal.fire({

@@ -4,7 +4,7 @@ import { useStore } from "../../Store/Store";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 export default function AddNewPermission() {
-  const {  addPermission, saveTypeIds, defaultSaveType,removeAllSaveTypeIds,removeAllListTypeOfSave } = useStore();
+  const {  addPermission, saveTypeIds, defaultSaveType,removeAllSaveTypeIds,removeAllListTypeOfSave,setDefaultSaveType } = useStore();
   const userId=localStorage.getItem('userId')
   const [Permission, setPermissions] = useState("");
   return (
@@ -46,6 +46,8 @@ export default function AddNewPermission() {
               storageList: response.data.saveTypes || [], // تغییر به storageList
             });
             removeAllSaveTypeIds()
+            setDefaultSaveType(0)
+            
           })
           .catch((err) => {
             alert(err);
