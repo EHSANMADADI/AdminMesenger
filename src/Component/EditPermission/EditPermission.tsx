@@ -15,13 +15,13 @@ export default function EditPermission() {
   const { Id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
+  
   const selectedPermission = Id
     ? PermissionList.find((permission) => permission.id === parseInt(Id))
     : null;
 
   // استفاده از useState برای مدیریت مقدار input
   const [name, setName] = useState(selectedPermission?.name || "");
-
   const [updatedStorageList, setUpdatedStorageList] = useState(
     selectedPermission?.storageList || []
   );
@@ -97,14 +97,10 @@ export default function EditPermission() {
   var saveTypeIds: number[] = [];
 
   const handelBTN = () => {
-    // let saveTypeIds: number[] = [];
-
     updatedStorageList.forEach((item) => {
       saveTypeIds.push(item.saveTypeId);
     });
 
-    // console.log(updatedStorageList); // برای نمایش لیست به‌روز شده
-    console.log(saveTypeIds); // برای نمایش saveTypeIds
     api
       .put(
         `/Admin/editPermission/${Id}`,
@@ -133,15 +129,21 @@ export default function EditPermission() {
       });
   };
 
+  // UseEffect برای اطمینان از تنظیم صحیح updatedStorageList
+  useEffect(() => {
+    if (selectedPermission) {
+      setUpdatedStorageList(selectedPermission.storageList || []);
+    }
+  }, [selectedPermission]);
+
   useEffect(() => {
     if (idTable) {
-      // فرض بر این که می‌خواهید idTable را به عنوان saveTypeId استفاده کنید
       const newEntry = {
         saveTypeId: idTable,
         client: "clientValue", // مقادیر client و server را با مقادیر مناسب جایگزین کنید
         server: "serverValue",
       };
-      setUpdatedStorageList((prevList) => [...prevList, newEntry]);
+      setUpdatedStorageList((prevList) => [newEntry, ...prevList]);
     }
     return () => {
       setIdTable(0);
@@ -173,7 +175,7 @@ export default function EditPermission() {
               انواع ذخیره سازی در این دسترسی:
             </h3>
 
-            {selectedPermission?.storageList.map((item, index) => {
+            {updatedStorageList.map((item, index) => {
               const storageName = getStorageName(item.saveTypeId);
 
               return (
@@ -209,8 +211,8 @@ export default function EditPermission() {
           <button
             onClick={handelBTN}
             className="bg-green-600 px-3 py-5 rounded text-white font-black w-full my-5 hover:scale-75 duration-300"
-          >
-            اعمال تغییرات
+            >
+            ویرایش دسترسی
           </button>
         </div>
       </div>

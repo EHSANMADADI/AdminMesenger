@@ -7,9 +7,10 @@ import { FaEdit } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
+import Loading from '../../Image/loader/loader.gif'
 
 export default function ListPermission() {
-  const { PermissionList, removePermission, setPermissionss } = useStore(); // استفاده از setPermissions
+  const { PermissionList, removePermission, setPermissionss,removeSaveTypeIds } = useStore(); // استفاده از setPermissions
   const userId=localStorage.getItem('userId')
   const navigate=useNavigate()
   const [loading, setLoading] =useState(true);
@@ -55,6 +56,7 @@ export default function ListPermission() {
           })
           .then(() => {
             removePermission(id);
+            // removeSaveTypeIds(id)
             Swal.fire({
               title: " با موفقیت حذف شد",
               icon: "success",
@@ -66,7 +68,10 @@ export default function ListPermission() {
 
   return (
     <>
-    {loading?(<Loader/>):( PermissionList.map((permission, index) => (
+    {loading?( <div className='flex w-full  justify-center items-center'>
+        <img src={Loading} className='bg-transparent w-20 h-20'/> 
+
+    </div>):( PermissionList.map((permission, index) => (
         <div
           key={index}
           className="flex justify-between items-center border-2 my-3 rounded-md bg-white p-1 cursor-pointer hover:bg-gray-300 duration-300"

@@ -15,7 +15,6 @@ const StorageType = () => {
   const [incription, setIncription] = useState("");
   const [fullIncription, setFullIncription] = useState("");
   const {
-    saveTypeIds,
     setSaveTypeIds,
     setDefaultSaveType,
     defaultSaveType,
@@ -106,7 +105,7 @@ const StorageType = () => {
     setFullIncription("");
     setIncription("");
   };
-  console.log(idTable);
+  
   useEffect(()=>{
     return(()=>{
       setIdTable(0)

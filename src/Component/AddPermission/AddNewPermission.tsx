@@ -4,13 +4,14 @@ import { useStore } from "../../Store/Store";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 export default function AddNewPermission() {
-  const {  addPermission, saveTypeIds, defaultSaveType } = useStore();
+  const {  addPermission, saveTypeIds, defaultSaveType,removeAllSaveTypeIds,removeAllListTypeOfSave } = useStore();
   const userId=localStorage.getItem('userId')
   const [Permission, setPermissions] = useState("");
   return (
     <div className="flex items-center px-5 bg-white rounded-md border-2">
       <span
         onClick={() => {
+          
           const newPermission = Permission;
           console.log(Permission);
           console.log("defalt=>", defaultSaveType);
@@ -35,6 +36,7 @@ export default function AddNewPermission() {
               title: "دسترسی جدید اضافه شد",
               icon: "success",
             });
+            removeAllListTypeOfSave()
             console.log(response);
             setPermissions("");
             addPermission({
@@ -43,6 +45,7 @@ export default function AddNewPermission() {
               id: response.data.id,
               storageList: response.data.saveTypes || [], // تغییر به storageList
             });
+            removeAllSaveTypeIds()
           })
           .catch((err) => {
             alert(err);
