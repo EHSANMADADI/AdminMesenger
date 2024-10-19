@@ -14,6 +14,7 @@ export default function FormEditUser() {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState(true); ///false=ban true=Ok
   const [admin, setAdmin] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const location = useLocation();
   const { userData } = location.state;
   const userId=localStorage.getItem('userId')
@@ -27,6 +28,21 @@ export default function FormEditUser() {
       setStatus(userData.status);
     }
   }, [userData]);
+  const handelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = event.target.files; // selectedFiles از نوع FileList است
+    if (selectedFiles && selectedFiles.length > 0) {
+      const selectedFile = selectedFiles[0]; // اولین فایل از FileList را انتخاب کنید
+      if (
+        selectedFile.type === "image/jpeg" ||
+        selectedFile.type === "image/jpg" ||
+        selectedFile.type === "image/png"
+      ) {
+        setFile(selectedFile); // فایل را در استیت قرار دهید
+      } else {
+        alert("فقط فایل‌های jpg، jpeg و png مجاز هستند.");
+      }
+    }
+  };
 
   const EditUser = () => {
     const formData = new FormData();
@@ -38,6 +54,9 @@ export default function FormEditUser() {
     formData.append("password", password);
     formData.append("isActive", status.toString());
     formData.append("isAdmin", admin.toString());
+    if (file) {
+      formData.append("avatar", file); // اضافه کردن فایل به formData
+    }
     api.put(`/Admin/editUser/${userData.id}`,formData, {
       headers: {
         userId,
@@ -169,6 +188,8 @@ export default function FormEditUser() {
             className="border-dashed border-2 border-blue-300 p-10 rounded-lg my-2 bg-gray-200"
             type="file"
             placeholder="تصویر نمایه را انتخاب کنید"
+            accept=".jpg, .png, .jpeg"
+            onChange={(e) => handelFileChange(e)}
           />
         </Fade>
         <div className="flex items-center">
