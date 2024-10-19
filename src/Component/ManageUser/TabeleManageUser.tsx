@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
@@ -20,10 +19,11 @@ interface User {
 
 export default function TabeleManageUser() {
   const navigate = useNavigate();
-  const userId=localStorage.getItem('userId')
+  const userId = localStorage.getItem('userId');
   const [pageination, setPageination] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
   const [totalCount, setTotalCount] = useState(0); // Track total number of users
+  const [loading, setLoading] = useState(true); // New loading state
   const pageSize = 6; // Number of users per page
 
   const deleteItem = (id: any) => {
@@ -49,22 +49,7 @@ export default function TabeleManageUser() {
               icon: "success",
             });
             // Fetch updated user list after successful deletion
-            api
-              .get(
-                `/User/getUserList?page=${pageination}&pageSize=${pageSize}`,
-                {
-                  headers: {
-                    userId,
-                  },
-                }
-              )
-              .then((res) => {
-                setUsers(res.data.users);
-                setTotalCount(res.data.totalCount);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+            fetchUsers();
           })
           .catch((err) => {
             console.log("deletuserEroor=>", err.message);
@@ -76,7 +61,8 @@ export default function TabeleManageUser() {
     });
   };
 
-  useEffect(() => {
+  const fetchUsers = () => {
+    setLoading(true); // Set loading to true before fetching
     api
       .get(`/User/getUserList?page=${pageination}&pageSize=${pageSize}`, {
         headers: {
@@ -84,20 +70,28 @@ export default function TabeleManageUser() {
         },
       })
       .then((res) => {
-        console.log(res);
         setUsers(res.data.users);
         setTotalCount(res.data.totalCount); // Set total count from response
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false after fetching
       });
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, [pageination, userId]); // Added userId and pageination to the dependency array
 
   const totalPages = Math.ceil(totalCount / pageSize); // Calculate total pages
 
   return (
     <>
-      {users && (
+      {loading ? ( // Show Loader when loading
+        <Loader />
+      ) : (
         <div>
           <div
             dir="rtl"
@@ -106,33 +100,17 @@ export default function TabeleManageUser() {
             <table className="w-full text-gray-500">
               <thead className="text-base font-bold text-gray-800 bg-blue-100">
                 <tr>
-                  <th scope="col" className="md:px-6 px-3 py-3">
-                    شناسه
-                  </th>
-                  <th scope="col" className="md:px-6 px-3 py-3">
-                    تصویر نمایه
-                  </th>
-                  <th scope="col" className="md:px-6 px-3 py-3">
-                    نام کامل
-                  </th>
-                  <th scope="col" className="md:px-6 px-3 py-3">
-                    نام کاربری
-                  </th>
-                  <th scope="col" className="md:px-6 px-3 py-3">
-                    کاربردها
-                  </th>
+                  <th scope="col" className="md:px-6 px-3 py-3">شناسه</th>
+                  <th scope="col" className="md:px-6 px-3 py-3">تصویر نمایه</th>
+                  <th scope="col" className="md:px-6 px-3 py-3">نام کامل</th>
+                  <th scope="col" className="md:px-6 px-3 py-3">نام کاربری</th>
+                  <th scope="col" className="md:px-6 px-3 py-3">کاربردها</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="bg-white text-center border-b hover:bg-gray-50"
-                  >
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
+                  <tr key={user.id} className="bg-white text-center border-b hover:bg-gray-50">
+                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {user.id}
                     </th>
                     <td className="md:px-6 px-3 py-4">
@@ -161,7 +139,7 @@ export default function TabeleManageUser() {
                         <span
                           onClick={() => {
                             navigate(`/Admin/ManageUser/edit/${user.id}`, {
-                              state: { userData: user }, // اطلاعات کاربر را اینجا ارسال می‌کنید
+                              state: { userData: user },
                             });
                           }}
                           className="text-green-600 cursor-pointer text-2xl border rounded-full p-2 border-green-400 hover:text-white hover:bg-green-400 mx-2 duration-200"
@@ -179,7 +157,7 @@ export default function TabeleManageUser() {
             </table>
           </div>
           <div className="flex justify-center mt-4">
-            {pageination > 1 && ( // نمایش دکمه قبلی تنها زمانی که صفحه اول نیستیم
+            {pageination > 1 && (
               <button
                 onClick={() => setPageination((prev) => Math.max(prev - 1, 1))}
                 className="px-4 py-2 bg-blue-500 text-white rounded-l-md hover:bg-blue-600"
@@ -187,16 +165,12 @@ export default function TabeleManageUser() {
                 قبلی
               </button>
             )}
-
             <span className="px-4 py-2 text-gray-700">
               {pageination} / {totalPages}
             </span>
-
-            {pageination < totalPages && ( // نمایش دکمه بعدی تنها زمانی که صفحه آخر نیستیم
+            {pageination < totalPages && (
               <button
-                onClick={() =>
-                  setPageination((prev) => Math.min(prev + 1, totalPages))
-                }
+                onClick={() => setPageination((prev) => Math.min(prev + 1, totalPages))}
                 className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
               >
                 بعدی
@@ -205,7 +179,6 @@ export default function TabeleManageUser() {
           </div>
         </div>
       )}
-      {!users && <Loader />}
     </>
   );
 }

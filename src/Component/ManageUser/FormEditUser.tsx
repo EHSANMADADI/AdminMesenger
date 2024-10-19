@@ -7,7 +7,7 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 export default function FormEditUser() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [username, setUsername] = useState("");
@@ -17,7 +17,7 @@ export default function FormEditUser() {
   const [file, setFile] = useState<File | null>(null);
   const location = useLocation();
   const { userData } = location.state;
-  const userId=localStorage.getItem('userId')
+  const userId = localStorage.getItem("userId");
   useEffect(() => {
     console.log(userData);
     if (userData) {
@@ -57,26 +57,27 @@ export default function FormEditUser() {
     if (file) {
       formData.append("avatar", file); // اضافه کردن فایل به formData
     }
-    api.put(`/Admin/editUser/${userData.id}`,formData, {
-      headers: {
-        userId,
-        "Content-Type": "multipart/form-data",
-      },
-    
-    }).then((res)=>{
-      console.log(res);
-      Swal.fire({
-        title: "کاربر با موفقیت ویرایش شد",
-        icon: "success",
-      });
-      navigate('/Admin/ManageUser')
-    })
-    .catch((err)=>{
-      Swal.fire({
-        title:'err',
-        icon: "error"
+    api
+      .put(`/Admin/editUser/${userData.id}`, formData, {
+        headers: {
+          userId,
+          "Content-Type": "multipart/form-data",
+        },
       })
-    })
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          title: "کاربر با موفقیت ویرایش شد",
+          icon: "success",
+        });
+        navigate("/Admin/ManageUser");
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "err",
+          icon: "error",
+        });
+      });
   };
 
   return (
@@ -98,7 +99,7 @@ export default function FormEditUser() {
         )}
       </div>
 
-      <form onSubmit={(e)=>e.preventDefault()} className="p-5">
+      <form onSubmit={(e) => e.preventDefault()} className="p-5">
         <Fade delay={200}>
           <div className="mb-5">
             <label className="font-bold" htmlFor="name">
@@ -156,7 +157,6 @@ export default function FormEditUser() {
                 const val = e.target.value;
                 setPassword(val);
               }}
-              
             />
           </div>
         </Fade>
