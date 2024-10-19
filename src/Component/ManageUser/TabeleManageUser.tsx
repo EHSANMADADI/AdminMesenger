@@ -160,7 +160,9 @@ export default function TabeleManageUser() {
                         </span>
                         <span
                           onClick={() => {
-                            navigate(`/Admin/ManageUser/edit/${user.id}`);
+                            navigate(`/Admin/ManageUser/edit/${user.id}`, {
+                              state: { userData: user }, // اطلاعات کاربر را اینجا ارسال می‌کنید
+                            });
                           }}
                           className="text-green-600 cursor-pointer text-2xl border rounded-full p-2 border-green-400 hover:text-white hover:bg-green-400 mx-2 duration-200"
                         >
