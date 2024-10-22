@@ -5,9 +5,15 @@
     font-weight: normal;
     font-style: normal;
 }
-body {
-    font-family: 'BYekan', sans-serif;
+
+@font-face {
+    font-family: 'Vazir';
+    src: url('./Font/Vazir.eot') format('eot');
+    src: url('./Font/Vazir.ttf') format('ttf');
+    src: url('./Font/Vazir.woff') format('wff');
+    src: url('./Font/Vazir.woff2') format('wff2');
 }
+
 
 .image-bg-login{
     background-image: url('./Image/bg-none.jpg');

@@ -16,8 +16,7 @@ export default function AddNewPermission() {
     setLoading(true)
     const newPermission = Permission;
     console.log(Permission);
-    console.log("defalt=>", defaultSaveType);
-    console.log("list seave tipeId", saveTypeIds);
+   
 
     api
     .post(

@@ -12,23 +12,31 @@ import Swal from "sweetalert2";
 import Loader from "../Loader";
 
 export default function EditPermission() {
-  const { PermissionList, setPermissionss, idTable, setIdTable,removeAllListTypeOfSave } = useStore();
+  const {
+    PermissionList,
+    setPermissionss,
+    idTable,
+    setIdTable,
+    removeAllListTypeOfSave,
+    setDefaultSaveType,
+    defaultSaveType,
+  } = useStore();
   const { Id } = useParams();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  const [loading,setLoading]=useState(false)
-  
+  const [loading, setLoading] = useState(false);
   const selectedPermission = Id
     ? PermissionList.find((permission) => permission.id === parseInt(Id))
     : null;
-    console.log('selected',selectedPermission);
-    
+  const [selectedItemDefalt, setSelectedItemDefalt] = useState(selectedPermission?.storageList[0].saveTypeId);
+  console.log("selected",selectedItemDefalt );
 
   // استفاده از useState برای مدیریت مقدار input
   const [name, setName] = useState(selectedPermission?.name || "");
   const [updatedStorageList, setUpdatedStorageList] = useState(
     selectedPermission?.storageList || []
   );
+  console.log("def", selectedItemDefalt);
 
   // handler برای مدیریت تغییرات input
   const handleInputChange = (e: any) => {
@@ -39,22 +47,22 @@ export default function EditPermission() {
   const getStorageName = (saveTypeId: number) => {
     switch (saveTypeId) {
       case 1:
-        return"در سمت سرور:ذخیره نشود-در سمت کاربر:ذخیره نشود"
+        return "در سمت سرور:ذخیره نشود-در سمت کاربر:ذخیره نشود";
       case 2:
-        return " در سمت سرور:ذخیره نشود-درسمت کاربر:ذخیره شود"
-         
+        return " در سمت سرور:ذخیره نشود-درسمت کاربر:ذخیره شود";
+
       case 3:
         return "در سمت سرور :ذخیره نشود - در سمت کاربر ذخیره شود با رمز گذاری متن";
       case 4:
         return "در سمت سرور :ذخیره نشود:- در سمت کاربر ذخیره شود با رمزگذاری کامل";
       case 5:
-        return"در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره نشود"
+        return "در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره نشود";
       case 6:
-        return"در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود"
+        return "در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود";
       case 7:
-        return"در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود با رمزگذاری متن"
+        return "در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود با رمزگذاری متن";
       case 8:
-        return"در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود با رمزگذاری کامل "
+        return "در سمت سرور:ذخیره شود-در سمت کاربر:ذخیره شود با رمزگذاری کامل ";
       case 9:
         return "در سمت سرور:ذخیره شود به همراه رمزگذاری متن-درسمت کاربر:ذخیره نشود";
       case 10:
@@ -104,7 +112,8 @@ export default function EditPermission() {
   const handelBTN = () => {
     setLoading(true);
     updatedStorageList.forEach((item) => {
-      saveTypeIds.push(item.saveTypeId);
+      if (item.saveTypeId !== defaultSaveType)
+        saveTypeIds.push(item.saveTypeId);
     });
 
     api
@@ -112,8 +121,8 @@ export default function EditPermission() {
         `/Admin/editPermission/${Id}`,
         {
           title: name,
-          defaultSaveType: saveTypeIds[0],
-          saveTypeIds: saveTypeIds.slice(1),
+          defaultSaveType: defaultSaveType,
+          saveTypeIds: saveTypeIds,
         },
         {
           headers: {
@@ -126,15 +135,15 @@ export default function EditPermission() {
           title: "عملیات با موفقیت انجام شد",
           icon: "success",
         });
-        removeAllListTypeOfSave()
-        setLoading(false)
+        removeAllListTypeOfSave();
+        setLoading(false);
       })
       .catch((err) => {
         Swal.fire({
           title: err,
           icon: "error",
         });
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -161,8 +170,10 @@ export default function EditPermission() {
 
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex p-5">
-      {loading?(<Loader/>):(
-          <div className="flex flex-wrap w-2/3 mx-auto justify-between image-bg-login max-h-full h-4/3 my-auto rounded-lg p-5 overflow-auto">
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex flex-wrap w-2/3 mx-auto justify-between image-bg-login max-h-full h-4/3 my-auto rounded-lg p-5 overflow-auto">
           <span
             onClick={() => {
               navigate("/Admin/AddPermission");
@@ -184,32 +195,42 @@ export default function EditPermission() {
               <h3 className="font-bold text-xl p-2">
                 انواع ذخیره سازی در این دسترسی:
               </h3>
-  
-              {selectedPermission && updatedStorageList.length > 0 ?(updatedStorageList.map((item, index) => {
-                const storageName = getStorageName(item.saveTypeId);
-  
-                return (
-                  <div
-                    className={`border rounded-xl p-4 my-2 flex items-center justify-between ${
-                      index === 0 ? "bg-gray-200" : ""
-                    }`}
-                    key={index}
-                  >
-                    <div className="flex items-center font-bold">
-                      <span>{storageName}</span>
-                    </div>
-                    <span
+
+              {selectedPermission && updatedStorageList.length > 0 ? (
+                updatedStorageList.map((item, index) => {
+                  const storageName = getStorageName(item.saveTypeId);
+
+                  return (
+                    <div
                       onClick={() => {
-                        handleDelete(index);
-                      }}
-                      className="text-red-500 text-lg cursor-pointer"
+                        setSelectedItemDefalt(item.saveTypeId);
+                        setDefaultSaveType(item.saveTypeId);
+                      }} // تنظیم آیتم انتخاب‌شده
+                      className={`border rounded-xl p-4 my-2 flex items-center justify-between cursor-pointer ${
+                        selectedItemDefalt === item.saveTypeId
+                          ? "bg-gray-200"
+                          : "" // بررسی اینکه آیا آیتم انتخاب شده است
+                      }`}
+                      key={index}
                     >
-                      <MdDelete />
-                    </span>
-                  </div>
-                );
-              })):(<div>Loading..</div>)
-              }
+                      <div className="flex items-center font-bold">
+                        <span>{storageName}</span>
+                      </div>
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation(); // جلوگیری از کلیک روی delete آیتم
+                          handleDelete(index);
+                        }}
+                        className="text-red-500 text-lg cursor-pointer p-4 hover:bg-red-100 duration-200 rounded-full"
+                      >
+                        <MdDelete />
+                      </span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div>Loading..</div>
+              )}
             </div>
           </div>
           <div dir="rtl" className="w-full flex justify-end mb-2">
@@ -222,13 +243,12 @@ export default function EditPermission() {
             <button
               onClick={handelBTN}
               className="bg-green-600 px-3 py-5 rounded text-white font-black w-full my-5 hover:scale-75 duration-300"
-              >
+            >
               ویرایش دسترسی
             </button>
           </div>
         </div>
       )}
-    
     </div>
   );
 }

@@ -8,13 +8,18 @@ import { FaEdit } from "react-icons/fa";
 import { useStore } from "../../Store/Store";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
-import Loading from '../../Image/loader/loader.gif'
+import Loading from "../../Image/loader/loader.gif";
 
 export default function ListPermission() {
-  const { PermissionList, removePermission, setPermissionss,removeSaveTypeIds } = useStore(); // استفاده از setPermissions
-  const userId=localStorage.getItem('userId')
-  const navigate=useNavigate()
-  const [loading, setLoading] =useState(true);
+  const {
+    PermissionList,
+    removePermission,
+    setPermissionss,
+    removeSaveTypeIds,
+  } = useStore(); // استفاده از setPermissions
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     api
       .get("/Admin/listPermissions", {
@@ -23,16 +28,23 @@ export default function ListPermission() {
         },
       })
       .then((response) => {
-        console.log('list->>>>>>>>>>',response.data);
+        console.log("list->>>>>>>>>>", response.data);
         // استفاده از setPermissions برای تنظیم کل لیست پرمیژن‌ها
         setPermissionss(
-          response.data.map((item: { title: string; permissionId: number,saveTypes:[{saveTypeId:number,server:string,client:string}] }) => ({
-            name: item.title,
-            active: true,
-            id: item.permissionId,
-            storageList:item.saveTypes
-            
-          }))
+          response.data.map(
+            (item: {
+              title: string;
+              permissionId: number;
+              saveTypes: [
+                { saveTypeId: number; server: string; client: string }
+              ];
+            }) => ({
+              name: item.title,
+              active: true,
+              id: item.permissionId,
+              storageList: item.saveTypes,
+            })
+          )
         );
         setLoading(false); // بارگذاری تمام شده است
       });
@@ -49,7 +61,7 @@ export default function ListPermission() {
       confirmButtonText: "بله",
     }).then((res) => {
       if (res.isConfirmed) {
-       setLoading(true)
+        setLoading(true);
         api
           .delete(`/Admin/deletePermission/${id}`, {
             headers: {
@@ -63,14 +75,15 @@ export default function ListPermission() {
               title: " با موفقیت حذف شد",
               icon: "success",
             });
-            setLoading(false)
-          }).catch((err)=>{
-            Swal.fire({
-              title:'مشکلی پیش آمده لطفا دوباره تلاش کنید',
-              icon:'error'
-            })
-           setLoading(false)
+            setLoading(false);
           })
+          .catch((err) => {
+            Swal.fire({
+              title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
+              icon: "error",
+            });
+            setLoading(false);
+          });
       }
     });
   };
@@ -78,15 +91,14 @@ export default function ListPermission() {
   return (
     <>
       {loading ? (
-        <div className='flex w-full justify-center items-center'>
-          <img src={Loading} className='bg-transparent w-20 h-20' />
+        <div className="flex w-full justify-center items-center">
+          <img src={Loading} className="bg-transparent w-20 h-20" />
         </div>
       ) : PermissionList.length === 0 ? ( // بررسی خالی بودن لیست
-        <div className='flex justify-center items-center text-gray-600 text-2xl font-black'>
+        <div className="flex justify-center items-center text-gray-600 text-2xl font-black">
           <p>دسترسی وجود ندارد</p>
         </div>
       ) : (
-      
         PermissionList.map((permission, index) => (
           <div
             key={index}
@@ -119,5 +131,4 @@ export default function ListPermission() {
       )}
     </>
   );
-  
 }
