@@ -56,9 +56,10 @@ export default function UserUiList() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {users.map((user) => {
+            {users.map((user,i) => {
               return (
                 <UserUi
+                key={i}
                   fullname={user.fullname}
                   avatar={user.avatar}
                   id={user.id}

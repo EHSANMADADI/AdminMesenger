@@ -29,20 +29,22 @@ export default function FormAddGroup() {
   };
   const [iscreateGroup, setIscreateGroup] = useState(false);
 
-  const { adminList } = useStore();
+  const { adminList,Members } = useStore();
   const createGroup = () => {
     const userId = localStorage.getItem("userId");
-    const formData = new FormData();
-    formData.append("Fullname", name);
-    formData.append("Username", userName);
-    formData.append("Members", JSON.stringify(adminList));
-
-    if (file) {
-      formData.append("avatar", file); // اضافه کردن فایل به formData
-    }
-    formData.append("Bio", bio);
     if (name && userName) {
+      const formData = new FormData();
+      formData.append("Fullname", name);
+      formData.append("Username", userName);
+      formData.append("Members", JSON.stringify(Members));
+      formData.append("Admins", JSON.stringify(adminList))
+      formData.append("Bio", bio);
+      if (file) {
+        formData.append("Avatar", file); // اضافه کردن فایل به formData
+      }
       setIscreateGroup(true);
+      console.log(formData);
+      
       api
         .post("/Admin/createGroup", formData, {
           headers: {
