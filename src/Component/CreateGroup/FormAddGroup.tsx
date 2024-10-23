@@ -29,6 +29,7 @@ export default function FormAddGroup() {
     }
   };
   const [iscreateGroup, setIscreateGroup] = useState(false);
+  
 
   const { adminList,Members } = useStore();
   const createGroup = () => {
@@ -135,15 +136,7 @@ export default function FormAddGroup() {
           ></textarea>
         </div>
 
-        <div className="flex items-center bg-white rounded border overflow-hidden">
-          <span className="text-gray-700 text-3xl py-2 px-3">
-            <MdPersonSearch />
-          </span>
-          <input
-            className="py-2 px-3 bg-transparent focus:outline-none overflow-hidden"
-            placeholder="جست و جو کاربران ..."
-          />
-        </div>
+       
 
         <div className="max-h-1/3 w-full overflow-auto my-3">
           <UserUiList />

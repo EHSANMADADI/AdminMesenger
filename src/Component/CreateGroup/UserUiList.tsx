@@ -7,6 +7,7 @@ import Loader from "../Loader";
 import Loadinggif from "../../Image/loader/loader.gif";
 import { FaAnglesRight } from "react-icons/fa6";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { MdPersonSearch } from "react-icons/md";
 interface User {
   id: number;
   avatar: string;
@@ -20,6 +21,8 @@ export default function UserUiList() {
   const [totalCount, setTotalCount] = useState(0); // Track total number of users
   const [loading, setLoading] = useState(true); // New loading state
   const [users, setUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+ 
   const fetchUsers = () => {
     setLoading(true); // Set loading to true before fetching
     api
@@ -46,6 +49,13 @@ export default function UserUiList() {
     fetchUsers();
   }, [pageination, userId]); // Added userId and pageination to the dependency array
 
+ // Filter users based on search term
+ const filteredUsers = users.filter((user) =>
+  user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  user.username.toLowerCase().includes(searchTerm.toLowerCase())
+);
+ 
+
   const totalPages = Math.ceil(totalCount / pageSize); // Calculate total pages
   return (
     <>
@@ -55,8 +65,19 @@ export default function UserUiList() {
         </div>
       ) : (
         <>
+         <div className="flex items-center bg-white rounded border overflow-hidden">
+          <span className="text-gray-700 text-3xl py-2 px-3">
+            <MdPersonSearch />
+          </span>
+          <input
+             value={searchTerm} // Bind search term
+             onChange={(e) => setSearchTerm(e.target.value)}
+            className="py-2 px-3 bg-transparent focus:outline-none overflow-hidden"
+            placeholder="جست و جو کاربران ..."
+          />
+        </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {users.map((user,i) => {
+            {filteredUsers.map((user,i) => {
               return (
                 <UserUi
                 key={i}
