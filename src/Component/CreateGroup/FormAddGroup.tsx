@@ -7,6 +7,7 @@ import { Fade } from "react-awesome-reveal";
 import api from "../../Config/api";
 import UserUiList from "./UserUiList";
 import loadLogin from "../../Image/loader/tail-spin.svg";
+import Swal from "sweetalert2";
 export default function FormAddGroup() {
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
@@ -55,10 +56,19 @@ export default function FormAddGroup() {
         .then((res) => {
           console.log(res);
           setIscreateGroup(false);
+          Swal.fire({
+            title:'گروه با موفقیت ساخته شد',
+            icon:'success'
+          })
         })
         .catch((err) => {
           console.log(err);
           setIscreateGroup(false);
+          Swal.fire({
+            title:'مشکلی پیش آمده لطفا دوباره تلاش کنید',
+            icon:'error'
+
+          })
         });
     }
   };

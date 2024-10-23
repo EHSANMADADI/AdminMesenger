@@ -93,7 +93,7 @@ export default function FormEditUser() {
           />
         ) : (
           <img
-            className="m-2 w-14 h-14 ml-auto border-2 bg-gray-300 border-gray-400 rounded-full"
+            className="m-2 w-24 h-24 ml-auto border-2 bg-gray-300 border-gray-400"
             src={noneAvatar}
           />
         )}

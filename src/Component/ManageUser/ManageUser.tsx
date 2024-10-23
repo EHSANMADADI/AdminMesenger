@@ -3,6 +3,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import TabeleManageUser from "./TabeleManageUser";
 import { Fade } from "react-awesome-reveal";
+import { FcSearch } from "react-icons/fc";
 export default function ManageUser() {
   const navigate = useNavigate();
   return (
@@ -17,6 +18,9 @@ export default function ManageUser() {
           <IoMdArrowRoundBack />
         </span>
         <Fade className="w-11/12" delay={200}>
+
+        
+     
         <div className="w-full">
           <TabeleManageUser />
         </div>

@@ -6,11 +6,10 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import api from "../../Config/api";
-import { useStore } from "../../Store/Store";
 import noneAvatar from "../../Image/none.jpg";
 import Loader from "../Loader";
+import { FcSearch } from "react-icons/fc";
 
-// Define the User interface
 interface User {
   id: number;
   avatar: string;
@@ -23,9 +22,11 @@ export default function TabeleManageUser() {
   const userId = localStorage.getItem('userId');
   const [pageination, setPageination] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
-  const [totalCount, setTotalCount] = useState(0); // Track total number of users
-  const [loading, setLoading] = useState(true); // New loading state
-  const pageSize = 6; // Number of users per page
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const pageSize = 6;
+  
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   const deleteItem = (id: any) => {
     Swal.fire({
@@ -49,7 +50,6 @@ export default function TabeleManageUser() {
               title: "کاربر با موفقیت حذف شد",
               icon: "success",
             });
-            // Fetch updated user list after successful deletion
             fetchUsers();
           })
           .catch((err) => {
@@ -63,7 +63,7 @@ export default function TabeleManageUser() {
   };
 
   const fetchUsers = () => {
-    setLoading(true); // Set loading to true before fetching
+    setLoading(true);
     api
       .get(`/User/getUserList?page=${pageination}&pageSize=${pageSize}`, {
         headers: {
@@ -72,35 +72,50 @@ export default function TabeleManageUser() {
       })
       .then((res) => {
         setUsers(res.data.users);
-        console.log(res.data);
-        
-        setTotalCount(res.data.totalCount); // Set total count from response
+        setTotalCount(res.data.totalCount);
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [pageination, userId]); // Added userId and pageination to the dependency array
+  }, [pageination, userId]);
 
-  const totalPages = Math.ceil(totalCount / pageSize); // Calculate total pages
+  // Filter users based on search term
+  const filteredUsers = users.filter((user) =>
+    user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <>
-      {loading ? ( // Show Loader when loading
+      {loading ? (
         <Loader />
       ) : (
         <div>
-          <div
-            dir="rtl"
-            className="relative overflow-x-auto shadow-md sm:rounded-lg w-full"
-          >
-            <table className="w-full text-gray-500">
+          <div dir="rtl" className="relative overflow-x-auto w-full">
+            <div
+              dir="rtl"
+              className="w-1/2 my-2 flex justify-end items-center outline-none rounded-xl md:p-4 p-2 border border-gray-300"
+            >
+              <span className="text-3xl ml-2">
+                <FcSearch />
+              </span>
+              <input
+                placeholder=" کاربر مورد نظر خود را وارد کنید"
+                className="w-full bg-transparent focus:outline-none outline-none"
+                value={searchTerm} // Bind search term
+                onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+              />
+            </div>
+            <table className="w-full text-gray-500 shadow-2xl sm:rounded-lg">
               <thead className="text-base font-bold text-gray-800 bg-blue-100">
                 <tr>
                   <th scope="col" className="md:px-6 px-3 py-3">شناسه</th>
@@ -111,7 +126,7 @@ export default function TabeleManageUser() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {filteredUsers.map((user) => (
                   <tr key={user.id} className="bg-white text-center border-b hover:bg-gray-50">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {user.id}

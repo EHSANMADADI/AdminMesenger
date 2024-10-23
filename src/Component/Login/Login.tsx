@@ -46,7 +46,8 @@ export default function Login() {
             icon: "error",
           });
           setLoader(false);
-        });
+        })
+        .finally(()=>setLoader(false));
     }
     else{
       Swal.fire({
