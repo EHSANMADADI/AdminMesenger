@@ -1,15 +1,35 @@
 import { create } from "zustand";
 
 type StoreState = {
-  PermissionList: { name: string; active: boolean; id: number; storageList: { saveTypeId: number; client: string; server: string }[] }[];
-  addPermission: (permission: { storageList: never[]; name: string; active: boolean; id: number; }) => void;
+  PermissionList: {
+    name: string;
+    active: boolean;
+    id: number;
+    storageList: { saveTypeId: number; client: string; server: string }[];
+    defalt:number
+  }[];
+  addPermission: (permission: {
+    storageList: never[];
+    name: string;
+    active: boolean;
+    id: number;
+    defalt:number
+  }) => void;
   removePermission: (index: number) => void;
-  setPermissionss: (permissions: { storageList: { saveTypeId: number; client: string; server: string }[]; name: string; active: boolean; id: number; }[]) => void;
-  
+  setPermissionss: (
+    permissions: {
+      storageList: { saveTypeId: number; client: string; server: string }[];
+      name: string;
+      active: boolean;
+      id: number;
+      defalt:number;
+    }[]
+  ) => void;
+
   listTypeOfseve: string[];
   setListTypeOfseve: (value: string) => void;
   removeListTypeOfseve: (index: number) => void;
-  removeAllListTypeOfSave:()=> void;
+  removeAllListTypeOfSave: () => void;
 
   defaultSaveType: number;
   setDefaultSaveType: (value: number) => void;
@@ -18,7 +38,7 @@ type StoreState = {
   saveTypeIds: number[];
   setSaveTypeIds: (value: number) => void;
   removeSaveTypeIds: (index: number) => void;
-  removeAllSaveTypeIds:()=>void;
+  removeAllSaveTypeIds: () => void;
 
   username: string;
   setUsername: (name: string) => void;
@@ -34,6 +54,14 @@ type StoreState = {
 
   idTable: number;
   setIdTable: (value: number) => void;
+
+  adminList: number[];
+  setAdminList: (value: number) => void;
+  removeAdminList: (id: number) => void;
+
+  Members: number[];
+  setMembers: (value: number) => void;
+  removeMembers: (id: number) => void;
 };
 
 export const useStore = create<StoreState>((set) => ({
@@ -43,6 +71,7 @@ export const useStore = create<StoreState>((set) => ({
       active: false,
       id: 0,
       storageList: [],
+      defalt:0
     },
   ],
 
@@ -64,9 +93,10 @@ export const useStore = create<StoreState>((set) => ({
 
   setPermissionss: (permissions) =>
     set(() => ({
-      PermissionList: permissions.map(permission => ({
+      PermissionList: permissions.map((permission) => ({
         ...permission,
         storageList: permission.storageList || [],
+        
       })),
     })),
 
@@ -84,26 +114,26 @@ export const useStore = create<StoreState>((set) => ({
     set((state) => ({
       listTypeOfseve: [...state.listTypeOfseve, value],
     })),
-    ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
   removeListTypeOfseve: (index: number) =>
     set((state) => ({
       listTypeOfseve: state.listTypeOfseve.filter((_, i) => i !== index),
     })),
-    removeAllListTypeOfSave:()=>set(() =>({
-      listTypeOfseve: []
+  removeAllListTypeOfSave: () =>
+    set(() => ({
+      listTypeOfseve: [],
     })),
 
   removeSaveTypeIds: (index: number) =>
     set((state) => ({
       saveTypeIds: state.saveTypeIds.filter((_, i) => i !== index),
     })),
-    
-   
-    removeAllSaveTypeIds: () =>
-      set(() => ({
-        saveTypeIds: [], // Fixed here
-      })),
-/////////////////////////////////////////////////////////////////////
+
+  removeAllSaveTypeIds: () =>
+    set(() => ({
+      saveTypeIds: [], // Fixed here
+    })),
+  /////////////////////////////////////////////////////////////////////
   username: "",
   setUsername: (name) => set(() => ({ username: name })),
   passwordUser: "",
@@ -116,4 +146,20 @@ export const useStore = create<StoreState>((set) => ({
 
   idTable: 0,
   setIdTable: (value) => set(() => ({ idTable: value })),
+  //////////////////////////////////////////////////////////////////
+  adminList: [],
+  setAdminList: (value) =>
+    set((state) => ({ adminList: [...state.adminList, value] })),
+  removeAdminList: (id: number) =>
+    set((state) => ({
+      adminList: state.adminList.filter((i) => i !== id),
+    })),
+  ////////////////////////////////////////////
+  Members: [],
+  setMembers: (value) =>
+    set((state) => ({ Members: [...state.Members, value] })),
+  removeMembers: (id: number) =>
+    set((state) => ({
+      Members: state.Members.filter((i) => i !== id),
+    })),
 }));

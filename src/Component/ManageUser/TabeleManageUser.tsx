@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
@@ -71,6 +72,8 @@ export default function TabeleManageUser() {
       })
       .then((res) => {
         setUsers(res.data.users);
+        console.log(res.data);
+        
         setTotalCount(res.data.totalCount); // Set total count from response
       })
       .catch((error) => {

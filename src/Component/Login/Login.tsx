@@ -19,33 +19,42 @@ export default function Login() {
   const { username, setUsername, passwordUser, setPasswordUser, setActive } =
     useStore();
   const Loginfun = () => {
-    setLoader(true);
-    api
-      .post("/Home/Login", { username: userName, password: password })
-      .then((res) => {
-        setUsername(userName);
-        setPasswordUser(password);
-        localStorage.setItem("username", userName);
-        if (res.data.isAdmin && res.data.isCorrect) {
-          setActive(true);
-          navigate("/Admin");
-        } else {
+    if(userName&&password){
+      setLoader(true);
+      api
+        .post("/Home/Login", { username: userName, password: password })
+        .then((res) => {
+          setUsername(userName);
+          setPasswordUser(password);
+          localStorage.setItem("username", userName);
+          if (res.data.isAdmin && res.data.isCorrect) {
+            setActive(true);
+            navigate("/Admin");
+          } else {
+            Swal.fire({
+              title: "شما اجازه ورود ندارید",
+              icon: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(userName, password);
+          console.log(err);
+  
           Swal.fire({
-            title: "شما اجازه ورود ندارید",
+            title: "نام کاربری یا رمز عبور اشتباه است ",
             icon: "error",
           });
-        }
-      })
-      .catch((err) => {
-        console.log(userName, password);
-        console.log(err);
-
-        Swal.fire({
-          title: "نام کاربری یا رمز عبور اشتباه است ",
-          icon: "error",
+          setLoader(false);
         });
-        setLoader(false);
-      });
+    }
+    else{
+      Swal.fire({
+        title:'لطفا نام کاربری و رمز عبور خود را وارد نمایید',
+        icon:'warning'
+      })
+    }
+    
   };
 
  

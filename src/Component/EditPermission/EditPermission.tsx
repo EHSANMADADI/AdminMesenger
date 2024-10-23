@@ -28,7 +28,9 @@ export default function EditPermission() {
   const selectedPermission = Id
     ? PermissionList.find((permission) => permission.id === parseInt(Id))
     : null;
-  const [selectedItemDefalt, setSelectedItemDefalt] = useState(selectedPermission?.storageList[0].saveTypeId);
+    console.log('list',PermissionList);
+    
+  const [selectedItemDefalt, setSelectedItemDefalt] = useState(selectedPermission?.defalt);
   console.log("selected",selectedItemDefalt );
 
   // استفاده از useState برای مدیریت مقدار input
@@ -131,6 +133,8 @@ export default function EditPermission() {
         }
       )
       .then((res) => {
+        console.log('PUT=>',res);
+        
         Swal.fire({
           title: "عملیات با موفقیت انجام شد",
           icon: "success",

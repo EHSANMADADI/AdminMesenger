@@ -55,6 +55,7 @@ export default function FormAddNewuser() {
     if (file) {
       formData.append("avatar", file); // اضافه کردن فایل به formData
     }
+    if(fullName&&mobile&&username&&password)
     api
       .post("/Admin/createuser", formData, {
         headers: {

@@ -1,17 +1,11 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
-import { useStore } from "../../Store/Store";
-import { MdPersonSearch } from "react-icons/md";
-import UserUi from "./UserUiList";
 import { Fade } from "react-awesome-reveal";
-import api from "../../Config/api";
-import UserUiList from "./UserUiList";
-import loadLogin from "../../Image/loader/tail-spin.svg";
-export default function FormAddGroup() {
+
+export default function FormEditGroup() {
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
-  const [bio, setBio] = useState("");
+  const[bio,setBio] = useState("");
   const handelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files; // selectedFiles از نوع FileList است
     if (selectedFiles && selectedFiles.length > 0) {
@@ -27,40 +21,6 @@ export default function FormAddGroup() {
       }
     }
   };
-  const [iscreateGroup, setIscreateGroup] = useState(false);
-
-  const { adminList } = useStore();
-  const createGroup = () => {
-    const userId = localStorage.getItem("userId");
-    const formData = new FormData();
-    formData.append("Fullname", name);
-    formData.append("Username", userName);
-    formData.append("Members", JSON.stringify(adminList));
-
-    if (file) {
-      formData.append("avatar", file); // اضافه کردن فایل به formData
-    }
-    formData.append("Bio", bio);
-    if (name && userName) {
-      setIscreateGroup(true);
-      api
-        .post("/Admin/createGroup", formData, {
-          headers: {
-            userId,
-            "Content-Type": "multipart/form-data", // مشخص کردن نوع محتوا
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setIscreateGroup(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIscreateGroup(false);
-        });
-    }
-  };
-
   return (
     <div dir="rtl" className="flex flex-end flex-col">
       <form
@@ -123,20 +83,6 @@ export default function FormAddGroup() {
           ></textarea>
         </div>
 
-        <div className="flex items-center bg-white rounded border overflow-hidden">
-          <span className="text-gray-700 text-3xl py-2 px-3">
-            <MdPersonSearch />
-          </span>
-          <input
-            className="py-2 px-3 bg-transparent focus:outline-none overflow-hidden"
-            placeholder="جست و جو کاربران ..."
-          />
-        </div>
-
-        <div className="max-h-1/3 w-full overflow-auto my-3">
-          <UserUiList />
-        </div>
-
         <Fade className="my-3" delay={200}>
           <label className="font-bold" htmlFor="picture">
             تصویر نمایه
@@ -150,26 +96,7 @@ export default function FormAddGroup() {
             required
           />
         </Fade>
-        {iscreateGroup && (
-          <button
-            disabled
-            className="bg-green-600 border-none flex items-center justify-center outline-none rounded text-white mt-4 px-5 py-3 w-full mx-auto hover:scale-105 hover:bg-green-700 duration-200"
-          >
-            <span>لطفا صبر کنید</span>
-            <span>
-              <img src={loadLogin} className="w-6 h-6 m-1" />
-            </span>
-          </button>
-        )}
-        {!iscreateGroup && (
-          <button
-            type="submit"
-            onClick={createGroup}
-            className="bg-green-600 border-none outline-none rounded text-white mt-4 px-5 py-3 w-full mx-auto hover:scale-105 hover:bg-green-700 duration-200"
-          >
-            ساخت گروه
-          </button>
-        )}
+        
       </form>
     </div>
   );

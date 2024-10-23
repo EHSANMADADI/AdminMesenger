@@ -15,7 +15,6 @@ export default function ListPermission() {
     PermissionList,
     removePermission,
     setPermissionss,
-    removeSaveTypeIds,
   } = useStore(); // استفاده از setPermissions
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
@@ -38,11 +37,13 @@ export default function ListPermission() {
               saveTypes: [
                 { saveTypeId: number; server: string; client: string }
               ];
+              defaultSaveType: { saveTypeId: number };
             }) => ({
               name: item.title,
               active: true,
               id: item.permissionId,
               storageList: item.saveTypes,
+              defalt:item.defaultSaveType.saveTypeId
             })
           )
         );

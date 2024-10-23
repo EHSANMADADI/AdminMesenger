@@ -27,7 +27,7 @@ export default function ListTypeStorageType() {
           </div>
         ))
       ) : (
-        <div className="flex font-bold text-gray-600">
+        <div className="flex font-bold text-gray-600 border-b-2 p-4">
           هنوز نوعی تعیین نکرده‌اید
         </div>
       )}
