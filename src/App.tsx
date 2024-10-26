@@ -13,6 +13,7 @@ import AddPermissionPage from "./pages/AddPermissionPage";
 import Loader from "./Component/Loader";
 import EditPermissionPage from "./pages/EditPermissionPage";
 import EditGroupPage from "./pages/EditGroupPage";
+import EditPermissionUserPage from "./pages/EditPermissionUserPage";
 
 function App() {
   const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -42,6 +43,7 @@ function App() {
             path="Admin/editPermission/:Id"
             element={<EditPermissionPage />}
           />
+          <Route path="Admin/EditPermissionUser/:Id" element={<EditPermissionUserPage />}/>
           <Route path="/Admin/Search" element={<SearchPage />}/>
           <Route path="/Admin/editGroup/:GroupId" element={<EditGroupPage />}/>
           <Route path="*" element={<NotFound />} />

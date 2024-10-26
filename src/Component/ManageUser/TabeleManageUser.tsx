@@ -165,7 +165,9 @@ export default function TabeleManageUser() {
                         >
                           <CiEdit />
                         </span>
-                        <span className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl hover:text-white">
+                        <span onClick={()=>{
+                          navigate(`/Admin/EditPermissionUser/${user.id}`)
+                        }} className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl hover:text-white">
                           <MdOutlineManageAccounts />
                         </span>
                       </div>
