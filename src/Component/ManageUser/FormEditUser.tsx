@@ -26,6 +26,9 @@ export default function FormEditUser() {
       setUsername(userData.username || "");
       setPassword(userData.password || "");
       setStatus(userData.status);
+      if(userData.roleName ==="Super_a"||userData.roleName ==="Admin_u"){
+        setAdmin(true)
+      }
     }
   }, [userData]);
   const handelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

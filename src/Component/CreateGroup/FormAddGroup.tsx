@@ -38,8 +38,12 @@ export default function FormAddGroup() {
       const formData = new FormData();
       formData.append("Fullname", name);
       formData.append("Username", userName);
-      formData.append("Members", JSON.stringify(Members));
-      formData.append("Admins", JSON.stringify(adminList))
+      Members.map((member)=>{
+       return formData.append("Members", member.toString());
+      })
+      adminList.map((admin)=>(formData.append("Admins",admin.toString())))
+      
+    
       formData.append("Bio", bio);
       if (file) {
         formData.append("Avatar", file); // اضافه کردن فایل به formData

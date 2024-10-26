@@ -15,6 +15,7 @@ interface User {
   avatar: string;
   fullname: string;
   username: string;
+  roleName: string;
 }
 
 export default function TabeleManageUser() {
