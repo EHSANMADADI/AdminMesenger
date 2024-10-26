@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
 import { useStore } from "../../Store/Store";
-import { MdPersonSearch } from "react-icons/md";
-import UserUi from "./UserUiList";
 import { Fade } from "react-awesome-reveal";
 import api from "../../Config/api";
 import UserUiList from "./UserUiList";
@@ -29,28 +27,26 @@ export default function FormAddGroup() {
     }
   };
   const [iscreateGroup, setIscreateGroup] = useState(false);
-  
 
-  const { adminList,Members } = useStore();
+  const { adminList, Members, removeAllMembers, removeAllAdminList } =
+    useStore();
   const createGroup = () => {
     const userId = localStorage.getItem("userId");
     if (name && userName) {
       const formData = new FormData();
       formData.append("Fullname", name);
       formData.append("Username", userName);
-      Members.map((member)=>{
-       return formData.append("Members", member.toString());
-      })
-      adminList.map((admin)=>(formData.append("Admins",admin.toString())))
-      
-    
+      Members.map((member) => {
+        return formData.append("Members", member.toString());
+      });
+      adminList.map((admin) => formData.append("Admins", admin.toString()));
       formData.append("Bio", bio);
       if (file) {
         formData.append("Avatar", file); // اضافه کردن فایل به formData
       }
       setIscreateGroup(true);
       console.log(formData);
-      
+
       api
         .post("/Admin/createGroup", formData, {
           headers: {
@@ -62,18 +58,23 @@ export default function FormAddGroup() {
           console.log(res);
           setIscreateGroup(false);
           Swal.fire({
-            title:'گروه با موفقیت ساخته شد',
-            icon:'success'
-          })
+            title: "گروه با موفقیت ساخته شد",
+            icon: "success",
+          });
+          setBio("");
+          setFile(null);
+          setName("");
+          setUserName("");
+          removeAllMembers();
+          removeAllAdminList();
         })
         .catch((err) => {
           console.log(err);
           setIscreateGroup(false);
           Swal.fire({
-            title:'مشکلی پیش آمده لطفا دوباره تلاش کنید',
-            icon:'error'
-
-          })
+            title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
+            icon: "error",
+          });
         });
     }
   };
@@ -139,8 +140,6 @@ export default function FormAddGroup() {
             placeholder="توضیحات..."
           ></textarea>
         </div>
-
-       
 
         <div className="max-h-1/3 w-full overflow-auto my-3">
           <UserUiList />

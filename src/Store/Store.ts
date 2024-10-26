@@ -58,10 +58,12 @@ type StoreState = {
   adminList: number[];
   setAdminList: (value: number) => void;
   removeAdminList: (id: number) => void;
+  removeAllAdminList:()=>void;
 
   Members: number[];
   setMembers: (value: number) => void;
   removeMembers: (id: number) => void;
+  removeAllMembers:()=>void;
 };
 
 export const useStore = create<StoreState>((set) => ({
@@ -154,6 +156,7 @@ export const useStore = create<StoreState>((set) => ({
     set((state) => ({
       adminList: state.adminList.filter((i) => i !== id),
     })),
+    removeAllAdminList:()=>set(()=>({adminList:[]})),
   ////////////////////////////////////////////
   Members: [],
   setMembers: (value) =>
@@ -162,4 +165,5 @@ export const useStore = create<StoreState>((set) => ({
     set((state) => ({
       Members: state.Members.filter((i) => i !== id),
     })),
-}));
+    removeAllMembers:()=>set(()=>({ Members:[]})),
+}))

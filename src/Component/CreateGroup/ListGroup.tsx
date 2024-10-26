@@ -56,7 +56,7 @@ export default function ListGroup() {
           })
           .then((res) => {
             Swal.fire({
-              title: "کاربر با موفقیت حذف شد",
+              title: "گروه با موفقیت حذف شد",
               icon: "success",
             });
             // Fetch updated user list after successful deletion
