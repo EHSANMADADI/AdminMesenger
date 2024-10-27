@@ -114,6 +114,7 @@ export default function FormEditGroup() {
           icon: "success",
         });
         console.log(res);
+        navigate('/Admin/AddGroup')
       })
       .catch((err) => {
         console.log(err);

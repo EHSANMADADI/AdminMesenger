@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useStore } from "../../Store/Store";
 export default function FormAddNewuser() {
   const { PermissionList, addPermission, setPermissionss } = useStore();
-  const userId=localStorage.getItem('userId')
+  const userId = localStorage.getItem("userId");
   const [fullName, setFullname] = useState("");
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");
@@ -51,47 +51,47 @@ export default function FormAddNewuser() {
     formData.append("username", username);
     formData.append("password", password);
     formData.append("isAdmin", isAdmin.toString()); // تبدیل boolean به string// تبدیل boolean به string
-    formData.append("permissions", JSON.stringify(permissions)); // تبدیل آرایه به string
+    permissions.map((item) => formData.append("Permission", item));
     if (file) {
       formData.append("avatar", file); // اضافه کردن فایل به formData
     }
-    if(fullName&&mobile&&username&&password)
-    api
-      .post("/Admin/createuser", formData, {
-        headers: {
-          userId,
-          "Content-Type": "multipart/form-data", // مشخص کردن نوع محتوا
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        Swal.fire({
-          title: "کاربر با موفقیت ایجاد شد",
-          icon: "success",
+
+    if (fullName && mobile && username && password)
+      api
+        .post("/Admin/createuser", formData, {
+          headers: {
+            userId,
+            "Content-Type": "multipart/form-data", // مشخص کردن نوع محتوا
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          Swal.fire({
+            title: "کاربر با موفقیت ایجاد شد",
+            icon: "success",
+          });
+          setFullname("");
+          setFile(null);
+          setIsAdmin(false);
+          setMobile("");
+          setUsername("");
+          setPassword("");
+          setPermissions([]);
+        })
+        .catch((error) => {
+          console.log("created User error=>", error);
+          if (error.status == 409) {
+            Swal.fire({
+              title: "این کاربر وجود دارد",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
+              icon: "error",
+            });
+          }
         });
-        setFullname('')
-        setFile(null);
-        setIsAdmin(false);
-        setMobile('');
-        setUsername('')
-        setPassword('')
-        setPermissions([])
-      })
-      .catch((error) => {
-        console.log("created User error=>", error);
-        if(error.status==409){
-          Swal.fire({
-            title: "این کاربر وجود دارد",
-            icon: "warning",
-          });
-        }
-        else{
-          Swal.fire({
-            title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
-            icon: "error",
-          });
-        }
-      });
   };
 
   useEffect(() => {

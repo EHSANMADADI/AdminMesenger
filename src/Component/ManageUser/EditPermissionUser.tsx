@@ -1,8 +1,10 @@
-import React from 'react'
-import { IoMdArrowRoundBack } from 'react-icons/io';
+import React from "react";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import PermissionUser from "./PermissionUser";
+
 export default function EditPermissionUser() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen  flex p-5">
       <div className="flex flex-wrap w-2/3 mx-auto justify-between image-bg-login max-h-full h-4/3 my-auto rounded-lg  p-5 overflow-auto ">
@@ -14,8 +16,10 @@ export default function EditPermissionUser() {
         >
           <IoMdArrowRoundBack />
         </span>
+        <div className="w-10/12">
+          <PermissionUser Id={0} />
         </div>
-
+      </div>
     </div>
-  )
+  );
 }

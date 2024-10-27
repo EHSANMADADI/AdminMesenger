@@ -36,7 +36,7 @@ function App() {
           <Route path="Admin/AddGroup" element={<AddGroupPage />} />
           <Route path="Admin/AddPermission" element={<AddPermissionPage />} />
           <Route
-            path="Admin/ManageUser/edit/:userId"
+            path="Admin/ManageUser/edit/:userIds"
             element={<UserEditPage />}
           />
            <Route

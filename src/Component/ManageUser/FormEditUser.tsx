@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { Fade } from "react-awesome-reveal";
@@ -6,6 +7,9 @@ import noneAvatar from "../../Image/none.jpg";
 import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import PermissionUser from "./PermissionUser";
+
 export default function FormEditUser() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -18,6 +22,9 @@ export default function FormEditUser() {
   const location = useLocation();
   const { userData } = location.state;
   const userId = localStorage.getItem("userId");
+  const {userIds} =useParams()
+  console.log('userIds',userIds);
+  
   useEffect(() => {
     console.log(userData);
     if (userData) {
@@ -26,11 +33,15 @@ export default function FormEditUser() {
       setUsername(userData.username || "");
       setPassword(userData.password || "");
       setStatus(userData.status);
-      if(userData.roleName ==="Super_a"||userData.roleName ==="Admin_u"){
-        setAdmin(true)
+      if (userData.roleName === "Super_a" || userData.roleName === "Admin_u") {
+        setAdmin(true);
       }
     }
   }, [userData]);
+
+
+
+
   const handelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files; // selectedFiles از نوع FileList است
     if (selectedFiles && selectedFiles.length > 0) {
@@ -60,6 +71,15 @@ export default function FormEditUser() {
     if (file) {
       formData.append("avatar", file); // اضافه کردن فایل به formData
     }
+    const storedPermissions = JSON.parse(
+      sessionStorage.getItem("userPermissions") || "[]"
+    );
+    storedPermissions.map((item: any) =>
+      formData.append("Permission", item.title)
+    );
+    console.log('storedPermissions Sended',storedPermissions);
+    
+
     api
       .put(`/Admin/editUser/${userData.id}`, formData, {
         headers: {
@@ -68,7 +88,7 @@ export default function FormEditUser() {
         },
       })
       .then((res) => {
-        console.log(res);
+        
         Swal.fire({
           title: "کاربر با موفقیت ویرایش شد",
           icon: "success",
@@ -145,6 +165,8 @@ export default function FormEditUser() {
             />
           </div>
         </Fade>
+
+        
         <Fade delay={400}>
           <div className="mb-5">
             <label className="font-bold mt-5" htmlFor="password">
@@ -237,6 +259,11 @@ export default function FormEditUser() {
             </div>
           </Fade>
         </div>
+        <Fade delay={580}>
+          <div>
+            <PermissionUser Id={userIds} />
+          </div>
+        </Fade>
 
         <Fade delay={600}>
           <button

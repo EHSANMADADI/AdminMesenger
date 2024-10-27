@@ -20,13 +20,13 @@ interface User {
 
 export default function TabeleManageUser() {
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
   const [pageination, setPageination] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
-  
+
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   const deleteItem = (id: any) => {
@@ -54,11 +54,18 @@ export default function TabeleManageUser() {
             fetchUsers();
           })
           .catch((err) => {
-            console.log("deletuserEroor=>", err.message);
-            Swal.fire({
-              title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
-              icon: "error",
-            });
+            if (err.status === 409) {
+              Swal.fire({
+                title: "شما دسترسی حذف این کاربر را ندارید",
+                icon: "error",
+              });
+            } else {
+              console.log("deletuserEroor=>", err.message);
+              Swal.fire({
+                title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
+                icon: "error",
+              });
+            }
           });
     });
   };
@@ -88,9 +95,10 @@ export default function TabeleManageUser() {
   }, [pageination, userId]);
 
   // Filter users based on search term
-  const filteredUsers = users.filter((user) =>
-    user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(totalCount / pageSize);
@@ -119,17 +127,33 @@ export default function TabeleManageUser() {
             <table className="w-full text-gray-500 shadow-2xl sm:rounded-lg">
               <thead className="text-base font-bold text-gray-800 bg-blue-100">
                 <tr>
-                  <th scope="col" className="md:px-6 px-3 py-3">شناسه</th>
-                  <th scope="col" className="md:px-6 px-3 py-3">تصویر نمایه</th>
-                  <th scope="col" className="md:px-6 px-3 py-3">نام کامل</th>
-                  <th scope="col" className="md:px-6 px-3 py-3">نام کاربری</th>
-                  <th scope="col" className="md:px-6 px-3 py-3">کاربردها</th>
+                  <th scope="col" className="md:px-6 px-3 py-3">
+                    شناسه
+                  </th>
+                  <th scope="col" className="md:px-6 px-3 py-3">
+                    تصویر نمایه
+                  </th>
+                  <th scope="col" className="md:px-6 px-3 py-3">
+                    نام کامل
+                  </th>
+                  <th scope="col" className="md:px-6 px-3 py-3">
+                    نام کاربری
+                  </th>
+                  <th scope="col" className="md:px-6 px-3 py-3">
+                    کاربردها
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map((user) => (
-                  <tr key={user.id} className="bg-white text-center border-b hover:bg-gray-50">
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <tr
+                    key={user.id}
+                    className="bg-white text-center border-b hover:bg-gray-50"
+                  >
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    >
                       {user.id}
                     </th>
                     <td className="md:px-6 px-3 py-4">
@@ -165,11 +189,7 @@ export default function TabeleManageUser() {
                         >
                           <CiEdit />
                         </span>
-                        <span onClick={()=>{
-                          navigate(`/Admin/EditPermissionUser/${user.id}`)
-                        }} className="text-blue-600 cursor-pointer hover:bg-blue-400 border rounded-full border-blue-300 p-2 text-2xl hover:text-white">
-                          <MdOutlineManageAccounts />
-                        </span>
+                        
                       </div>
                     </td>
                   </tr>
@@ -191,7 +211,9 @@ export default function TabeleManageUser() {
             </span>
             {pageination < totalPages && (
               <button
-                onClick={() => setPageination((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() =>
+                  setPageination((prev) => Math.min(prev + 1, totalPages))
+                }
                 className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
               >
                 بعدی
