@@ -166,12 +166,12 @@ export default function FormAddNewuser() {
         <Fade delay={350}>
           <div className="mb-5">
             <span className="font-black">انواع دسترسی ها</span>
-            <div className="grid mt-3 grid-cols-1 sm:grid-cols-4 gap-4 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+            <div className="grid mt-3 grid-cols-1 sm:grid-cols-4 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
               {PermissionList.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className=" border-gray-200 sm:border-b-0 sm:border-r"
+                    className=" border-gray-200 sm:border-b sm:border-r"
                   >
                     <div className="flex items-center ps-3">
                       <input

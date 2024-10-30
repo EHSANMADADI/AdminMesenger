@@ -28,10 +28,12 @@ export default function EditPermission() {
   const selectedPermission = Id
     ? PermissionList.find((permission) => permission.id === parseInt(Id))
     : null;
-    console.log('list',PermissionList);
-    
-  const [selectedItemDefalt, setSelectedItemDefalt] = useState(selectedPermission?.defalt);
-  console.log("selected",selectedItemDefalt );
+
+
+  const [selectedItemDefalt, setSelectedItemDefalt] = useState(
+    selectedPermission?.defalt
+  );
+
 
   // استفاده از useState برای مدیریت مقدار input
   const [name, setName] = useState(selectedPermission?.name || "");
@@ -88,6 +90,7 @@ export default function EditPermission() {
 
   const handleDelete = (index: number) => {
     if (!selectedPermission) return; // بررسی وجود پرمیژن انتخاب شده
+    console.log("click");
 
     // حذف آیتم از storageList
     const newList = selectedPermission.storageList.filter(
@@ -129,12 +132,13 @@ export default function EditPermission() {
         {
           headers: {
             userId: userId,
+            "Access-Control-Allow-Origin": true,
           },
         }
       )
       .then((res) => {
-        console.log('PUT=>',res);
-        
+        console.log("PUT=>", res);
+
         Swal.fire({
           title: "عملیات با موفقیت انجام شد",
           icon: "success",
@@ -148,6 +152,7 @@ export default function EditPermission() {
           icon: "error",
         });
         setLoading(false);
+        console.log("eroor delete permission", err);
       });
   };
 

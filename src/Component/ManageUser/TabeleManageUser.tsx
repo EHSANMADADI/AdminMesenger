@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
@@ -26,6 +27,7 @@ export default function TabeleManageUser() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
+  const[search,setSearch]=useState(false)
 
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
@@ -73,11 +75,14 @@ export default function TabeleManageUser() {
   const fetchUsers = () => {
     setLoading(true);
     api
-      .get(`/User/getUserList?page=${pageination}&pageSize=${pageSize}`, {
-        headers: {
-          userId,
-        },
-      })
+      .get(
+        `/User/getUserList?page=${pageination}&pageSize=${pageSize}&search=${searchTerm}`,
+        {
+          headers: {
+            userId,
+          },
+        }
+      )
       .then((res) => {
         setUsers(res.data.users);
         setTotalCount(res.data.totalCount);
@@ -87,19 +92,18 @@ export default function TabeleManageUser() {
       })
       .finally(() => {
         setLoading(false);
+        setSearch(false)
       });
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [pageination, userId]);
+  }, [pageination, userId,search]);
+
+
 
   // Filter users based on search term
-  const filteredUsers = users.filter(
-    (user) =>
-      user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
 
   const totalPages = Math.ceil(totalCount / pageSize);
 
@@ -114,7 +118,7 @@ export default function TabeleManageUser() {
               dir="rtl"
               className="w-1/2 my-2 flex justify-end items-center outline-none rounded-xl md:p-4 p-2 border border-gray-300"
             >
-              <span className="text-3xl ml-2">
+              <span onClick={()=>setSearch(true)} className="text-3xl ml-2 cursor-pointer hover:bg-blue-200 p-2 rounded-full duration-300 ">
                 <FcSearch />
               </span>
               <input
@@ -145,7 +149,7 @@ export default function TabeleManageUser() {
                 </tr>
               </thead>
               <tbody>
-                {filteredUsers.map((user) => (
+                {users.map((user) => (
                   <tr
                     key={user.id}
                     className="bg-white text-center border-b hover:bg-gray-50"
@@ -189,7 +193,6 @@ export default function TabeleManageUser() {
                         >
                           <CiEdit />
                         </span>
-                        
                       </div>
                     </td>
                   </tr>

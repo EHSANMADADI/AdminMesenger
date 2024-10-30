@@ -126,10 +126,15 @@ export const useStore = create<StoreState>((set) => ({
       listTypeOfseve: [],
     })),
 
-  removeSaveTypeIds: (index: number) =>
-    set((state) => ({
-      saveTypeIds: state.saveTypeIds.filter((_, i) => i !== index),
+    removeSaveTypeIds: (saveTypeId) => set((state) => ({
+      PermissionList: state.PermissionList.map((permission) => ({
+        ...permission,
+        storageList: permission.storageList.filter(
+          (item) => item.saveTypeId !== saveTypeId
+        ),
+      })),
     })),
+    
 
   removeAllSaveTypeIds: () =>
     set(() => ({

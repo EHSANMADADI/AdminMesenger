@@ -35,7 +35,7 @@ export default function ListGroup() {
       });
   };
   useEffect(() => {
-    fetchGroup()
+    fetchGroup();
   }, []);
   const handelDelet = (id: number) => {
     Swal.fire({
@@ -81,7 +81,7 @@ export default function ListGroup() {
         {groups &&
           groups.map((group, i) => (
             <div
-            key={i}
+              key={i}
               dir="rtl"
               className="flex items-center justify-between bg-gray-200 hover:bg-slate-300 duration-200 rounded-lg hover:text-white p-2 my-3 cursor-pointer"
             >

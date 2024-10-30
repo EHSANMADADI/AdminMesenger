@@ -16,10 +16,15 @@ export default function ListTypeStorageType() {
               <span className="p-2 font-black">{item}</span>
               <button
                 className="text-red-500 font-black m-1 hover:border-b-2 duration-200 hover:border-b-red-700"
-                onClick={() =>{
-                   removeListTypeOfseve(index);
-                   removeSaveTypeIds(index)
-                  }}
+                onClick={() => {
+                  const saveTypeId = parseInt(listTypeOfseve[index], 10); // تبدیل به عدد
+                  if (!isNaN(saveTypeId)) { // بررسی معتبر بودن عدد
+                    removeListTypeOfseve(index); // حذف با ایندکس
+                    removeSaveTypeIds(saveTypeId); // حذف بر اساس شناسه
+                  } else {
+                    console.error("Invalid saveTypeId");
+                  }
+                }}
               >
                 حذف
               </button>

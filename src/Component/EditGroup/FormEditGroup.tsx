@@ -7,6 +7,7 @@ import api from "../../Config/api";
 import Swal from "sweetalert2";
 import { MdDeleteForever } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
+import PermissionUser from "../ManageUser/PermissionUser";
 interface Members {
   id: number;
   fullname: string;
@@ -98,9 +99,9 @@ export default function FormEditGroup() {
       .filter((user) => user.roleInChat === "Admin_u")
       .map((user) => user.id);
     setAdmins(adminIds);
-    adminIds.map((admin) =>formData.append("Admins",admin.toString()) )
-    console.log('admins',adminIds);
-    
+    adminIds.map((admin) => formData.append("Admins", admin.toString()));
+    console.log("admins", adminIds);
+
     api
       .put(`/Admin/editGroup/${GroupId}`, formData, {
         headers: {
@@ -114,7 +115,7 @@ export default function FormEditGroup() {
           icon: "success",
         });
         console.log(res);
-        navigate('/Admin/AddGroup')
+        navigate("/Admin/AddGroup");
       })
       .catch((err) => {
         console.log(err);
@@ -206,7 +207,7 @@ export default function FormEditGroup() {
                 این گروه کاربری ندارد
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-1 my-4">
+              <div className="grid lg:grid-cols-2 grid-cols-1 gap-1 my-4">
                 {users.map((user) => (
                   <div
                     className={`flex items-center space-x-2 border-2 justify-between p-2 rounded hover:bg-gray-200 duration-300 ${
@@ -245,6 +246,10 @@ export default function FormEditGroup() {
             )}
           </div>
         </Fade>
+
+        <div>
+          <PermissionUser Id={GroupId} />
+        </div>
 
         <div className="flex w-full justify-start items-center mt-5 ">
           <button
