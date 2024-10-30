@@ -48,8 +48,12 @@ export default function FormAddGroup() {
     PermissionList,
     setPermissionss,
   } = useStore();
+
+
+
+  
   const createGroup = () => {
-    const userId = localStorage.getItem("userId");
+   
     if (name && userName) {
       const formData = new FormData();
       formData.append("Fullname", name);
@@ -60,10 +64,10 @@ export default function FormAddGroup() {
       if (file) formData.append("Avatar", file);
       setIsCreateGroup(true);
       permissionName.map((item) => formData.append("Permission", item.toString()));
-      console.log(['permissionGroup',permissions]);
+      console.log(['permissionGroup', permissions]);
       
       console.log(formData);
-
+  
       api
         .post("/Admin/createGroup", formData, {
           headers: {
@@ -76,6 +80,9 @@ export default function FormAddGroup() {
           Swal.fire({
             title: "گروه با موفقیت ساخته شد",
             icon: "success",
+          }).then(() => {
+            // Refresh the page after the success message is closed
+            window.location.reload();
           });
           setBio("");
           setFile(null);
@@ -93,13 +100,14 @@ export default function FormAddGroup() {
         });
     }
   };
+  
 
   useEffect(() => {
     if (PermissionList.length > 0) {
       setIsLoading(false);
     }
     console.log("permissionList", permissions);
-
+  
     api
       .post(
         "/Admin/UsersByPermissions",
@@ -112,22 +120,40 @@ export default function FormAddGroup() {
       )
       .then((response) => {
         console.log("UserByPermission", response.data);
-        if (response.data && response.data.users) {
-          setUsers(response.data.users);
+        if (response.data && Array.isArray(response.data.users)) {
+          const uniqueUserIds = new Set<string>(response.data.users.map((user: { id: any; }) => user.id)); // ایجاد Set برای شناسه‌های یکتا
+          const uniqueUsers: User[] = [];
+  
+          // ساخت اشیاء کاربر از روی شناسه‌های یکتا
+          uniqueUserIds.forEach(id => {
+            const user = response.data.users.find((user: { id: string; }) => user.id === id); // پیدا کردن کاربر بر اساس شناسه
+            if (user) {
+              uniqueUsers.push(user); // اضافه کردن کاربر به آرایه یکتا
+            }
+          });
+  
+          setUsers(uniqueUsers); // بروزرسانی لیست کاربران
         } else if (response.data) {
-          const upUser = [];
+          const upUser: User[] = []; // نوع آرایه را مشخص کنید
           for (const item of response.data) {
-            if (item.users) {
-              upUser.push(...item.users); // اضافه کردن کاربران به upUser
+            if (Array.isArray(item.users)) {
+              item.users.forEach((user: User) => upUser.push(user)); // اضافه کردن کاربران به upUser
             }
           }
-          setUsers(upUser);
+  
+          // حذف کاربران تکراری
+          const uniqueUpUser = Array.from(new Set(upUser.map(user => user.id)))
+            .map(id => upUser.find(user => user.id === id)); // ایجاد اشیاء کاربر برای کاربران یکتا
+  
+          setUsers(uniqueUpUser as User[]); // اطمینان از نوع کاربر
         }
       })
       .catch((err) => {
         console.log(err);
       });
   }, [permissions]);
+  
+  
 
   const handlePermissionChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -152,7 +178,7 @@ export default function FormAddGroup() {
     });
   };
   
-
+///listPermission Api
   useEffect(() => {
     api
       .get("/Admin/listPermissions", {
@@ -170,6 +196,9 @@ export default function FormAddGroup() {
         setPermissionss(newListPermission);
       });
   }, []);
+
+
+
   return (
     <div dir="rtl" className="flex flex-end flex-col">
       {isLoading ? ( // نمایش لودر در صورت لود شدن لیست پرمیژن‌ها
