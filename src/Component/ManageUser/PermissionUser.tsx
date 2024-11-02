@@ -66,10 +66,12 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
   }, [userPermissions]);
 
   useEffect(() => {
+    const userPermissionId=userPermissions.map((item)=>item.permissionId)
+    
     api
       .post(
         "/Admin/UsersByPermissions",
-        userPermissions, // ارسال آرایه‌ای از `id`ها بدون نام
+        userPermissionId, // ارسال آرایه‌ای از `id`ها بدون نام
         {
           headers: {
             userId,
