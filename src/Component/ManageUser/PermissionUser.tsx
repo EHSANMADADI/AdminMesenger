@@ -160,9 +160,10 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
         <h2 className="text-2xl font-bold p-3">افزودن کاربر</h2>
       </div>
       <div className="max-h-1/3 w-full overflow-auto grid grid-cols-2 my-3">
-        {addUsers.map((user) => {
+        {addUsers.map((user,i) => {
           return (
             <UserUi
+            key={i}
               fullname={user.fullname}
               avatar={user.avatar}
               id={user.id}
