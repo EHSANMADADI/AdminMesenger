@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { MdDeleteForever } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import PermissionUser from "../ManageUser/PermissionUser";
+import UserUi from "../CreateGroup/UserUi";
 interface Members {
   id: number;
   fullname: string;
@@ -24,6 +25,7 @@ export default function FormEditGroup() {
   const [bio, setBio] = useState("");
   const [users, setUsers] = useState<Members[]>([]);
   const [admins, setAdmins] = useState<number[]>([]);
+  
   const handelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files; // selectedFiles از نوع FileList است
     if (selectedFiles && selectedFiles.length > 0) {
@@ -250,6 +252,7 @@ export default function FormEditGroup() {
         <div>
           <PermissionUser Id={GroupId} />
         </div>
+        
 
         <div className="flex w-full justify-start items-center mt-5 ">
           <button
