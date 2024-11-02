@@ -10,7 +10,7 @@ import api from "../../Config/api";
 import noneAvatar from "../../Image/none.jpg";
 import Loader from "../Loader";
 import { FcSearch } from "react-icons/fc";
-
+import { HiMiniUserGroup } from "react-icons/hi2";
 interface User {
   id: number;
   avatar: string;
@@ -193,6 +193,18 @@ export default function TabeleManageUser() {
                         >
                           <CiEdit />
                         </span>
+                        <span
+                          onClick={() => {
+                            navigate(`/Admin/JoinGroup/${user.id}`, {
+                              state: { userData: user },
+                            });
+                          }}
+                          className="text-blue-600 cursor-pointer text-2xl border rounded-full p-2 border-blue-400 hover:text-white hover:bg-blue-400 mx-2 duration-200"
+                        >
+                          <HiMiniUserGroup />
+                        </span>
+
+
                       </div>
                     </td>
                   </tr>
