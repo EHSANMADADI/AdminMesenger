@@ -26,6 +26,11 @@ type StoreState = {
     }[]
   ) => void;
 
+  ///////////////////////
+  // permissionId:number[],
+  // setPerMisswionId:(value:number)=>void
+  //////////
+
   listTypeOfseve: string[];
   setListTypeOfseve: (value: string) => void;
   removeListTypeOfseve: (index: number) => void;
