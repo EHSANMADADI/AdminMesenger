@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { MdDeleteForever } from "react-icons/md";
 import PermissionUser from "../ManageUser/PermissionUser";
 import { useStore } from "../../Store/Store";
+import axios from "axios";
 interface Members {
   id: number;
   fullname: string;
@@ -30,17 +31,11 @@ export default function FormEditGroup() {
     userId: number | null;
   }>({ x: 0, y: 0, userId: null });
 
-
   const navigate = useNavigate();
   const { GroupId } = useParams();
   const userId = localStorage.getItem("userId");
-  const {Members,removeAllMembers}=useStore()
-
-
-
-
-
-
+  const { Members, removeAllMembers } = useStore();
+  const [permissionAddUser, setPermissionAddUser] = useState<number[]>();
 
   useEffect(() => {
     api
@@ -61,7 +56,6 @@ export default function FormEditGroup() {
         navigate("/Admin/AddGroup");
       });
   }, []);
- 
 
   const handleContextMenu = (e: React.MouseEvent, userId: number) => {
     e.preventDefault();
@@ -119,33 +113,45 @@ export default function FormEditGroup() {
     formData.append("Username", userName);
     formData.append("Bio", bio);
     if (file) formData.append("Avatar", file);
-    
+
     users.forEach((user) => formData.append("Members", user.id.toString()));
-    console.log(Members);
-    
-    Members.forEach((member) => formData.append("Members", member.toString()))
+   
+
+    Members.forEach((member) => formData.append("Members", member.toString()));
     const adminIds = users
       .filter((user) => user.roleInChat === "Admin_u")
       .map((user) => user.id);
     setAdmins(adminIds);
     adminIds.forEach((admin) => formData.append("Admins", admin.toString()));
     console.log("formDat You send", formData);
+    const permission = sessionStorage.getItem("userPermissions");
+    if (permission) {
+      console.log(JSON.parse(permission));
+      const permissionList = JSON.parse(permission);
+      console.log(permissionList);
+      
+      const permissionId=permissionList.map((item: { title: number; })=>item.title)
+      permissionId.map((item:number)=>formData.append("Permission",item.toString()));
+      console.log(permissionId);
+      
+    }
+   
+    
 
-    api
-      .put(`/Admin/editGroup/${GroupId}`, formData, {
+    // axios.put(`https://192.168.4.162:45456/Admin/editGroup/${GroupId}`, formData, {
+      api.put(`Admin/editGroup/${GroupId}`, formData, {
         headers: { userId, "Content-Type": "multipart/form-data" },
       })
       .then(() =>
-        Swal.fire({ title: "گروه با موفقیت ویرایش شد", icon: "success" }),
-     
+        Swal.fire({ title: "گروه با موفقیت ویرایش شد", icon: "success" })
       )
       .catch(() =>
         Swal.fire({
           title: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
           icon: "error",
         })
-       
-      ).finally(()=>removeAllMembers())
+      )
+      .finally(() => removeAllMembers());
   };
 
   return (
