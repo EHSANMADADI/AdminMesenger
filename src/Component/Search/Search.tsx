@@ -7,6 +7,7 @@ import { FcSearch } from "react-icons/fc";
 import api from "../../Config/api";
 import bgUser from "../../Image/none.jpg";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import Loader from "../Loader";
 interface User {
   id: number;
   avatar: string;
@@ -39,7 +40,7 @@ export default function Search() {
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchOption, setSearchOption] = useState(""); // State for selected search option
+  const [searchOption, setSearchOption] = useState("users"); // State for selected search option
 
   const fetchUsers = () => {
     setLoading(true);
@@ -87,10 +88,10 @@ export default function Search() {
         setLoading(false);
       });
   };
-  const fetchUsersByMobile=()=>{
+  const fetchUsersByMobile = () => {
     setLoading(true);
     api
-     .get(
+      .get(
         `/User/getUserMobileList?page=${pageination}&pageSize=${pageSize}&search=${searchTerm}`,
         {
           headers: {
@@ -98,31 +99,32 @@ export default function Search() {
           },
         }
       )
-     .then((res) => {
+      .then((res) => {
         console.log(res.data);
         setUsers(res.data.users);
         setTotalCount(res.data.totalCount);
       })
-     .catch((error) => {
+      .catch((error) => {
         console.log(error);
       })
-     .finally(() => {
+      .finally(() => {
         setLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
+    if (!searchOption) return; // جلوگیری از اجرای زمانی که گزینه انتخاب نشده است
+    
+    setLoading(true);
     if (searchOption === "users") {
       fetchUsers();
     } else if (searchOption === "chat") {
-      setTotalCount(0);
       fetchMessages();
-    }
-    else if (searchOption === "mobile"){
-      setTotalCount(0);
+    } else if (searchOption === "mobile") {
       fetchUsersByMobile();
     }
-  }, [pageination, searchOption, searchTerm]); // Remove `search` dependency
+  }, [pageination, searchOption, searchTerm]);
+  
 
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex p-5">
@@ -210,199 +212,208 @@ export default function Search() {
             </div>
           </div>
         </Fade>
-        {totalPages > 1 && (
-          <div className="flex justify-center my-4">
-            {pageination > 1 && (
-              <button
-                onClick={() => setPageination((prev) => Math.max(prev - 1, 1))}
-                className="px-4 py-2 bg-blue-500 text-white rounded-l-md hover:bg-blue-600"
-              >
-                قبلی
-              </button>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            {totalPages > 1 && (
+              <div className="flex justify-center my-4">
+                {pageination > 1 && (
+                  <button
+                    onClick={() =>
+                      setPageination((prev) => Math.max(prev - 1, 1))
+                    }
+                    className="px-4 py-2 bg-blue-500 text-white rounded-l-md hover:bg-blue-600"
+                  >
+                    قبلی
+                  </button>
+                )}
+                <span className="px-4 py-2 text-gray-700">
+                  {pageination} / {totalPages}
+                </span>
+                {pageination < totalPages && (
+                  <button
+                    onClick={() =>
+                      setPageination((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
+                  >
+                    بعدی
+                  </button>
+                )}
+              </div>
             )}
-            <span className="px-4 py-2 text-gray-700">
-              {pageination} / {totalPages}
-            </span>
-            {pageination < totalPages && (
-              <button
-                onClick={() =>
-                  setPageination((prev) => Math.min(prev + 1, totalPages))
-                }
-                className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
-              >
-                بعدی
-              </button>
+
+            {searchOption === "users" &&
+              users.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
+                >
+                  <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
+                    <span>{user.mobile}</span>
+                  </div>
+                  <div className="text-center font-bold text-xl">
+                    <h4>{user.fullname}</h4>
+                    <p>{user.username}</p>
+                  </div>
+                  <img
+                    src={
+                      user.avatar
+                        ? `https://195.191.45.56:5155/uploads/${user.avatar}`
+                        : bgUser
+                    }
+                    className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2"
+                  />
+                </div>
+              ))}
+
+            {searchOption === "chat" && (
+              <div className="overflow-auto w-full">
+                {/* نمایش جدول محتوای متنی تنها زمانی که داده‌ای وجود دارد */}
+                {messages.some(
+                  (message) =>
+                    !message.isFiles &&
+                    !message.isAudio &&
+                    !message.isImg &&
+                    !message.isVideo
+                ) && (
+                  <>
+                    <table className="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
+                      <thead>
+                        <tr>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            فرستنده
+                          </th>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            گیرنده
+                          </th>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            محتوا
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {messages.map(
+                          (message, i) =>
+                            !message.isFiles &&
+                            !message.isAudio &&
+                            !message.isImg &&
+                            !message.isVideo && (
+                              <tr key={i} className="even:bg-gray-100">
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.sender}
+                                </td>
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.recipient}
+                                </td>
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.userContent}
+                                </td>
+                              </tr>
+                            )
+                        )}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+
+                {/* نمایش جدول فایل‌ها تنها زمانی که داده‌ای وجود دارد */}
+                {messages.some(
+                  (message) =>
+                    message.isFiles ||
+                    message.isAudio ||
+                    message.isImg ||
+                    message.isVideo
+                ) && (
+                  <>
+                    <h2 className="text-2xl font-bold text-right p-2 my-2 border-b-2">
+                      :انواع فایل ها
+                    </h2>
+                    <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+                      <thead>
+                        <tr>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            فرستنده
+                          </th>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            گیرنده
+                          </th>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            نوع محتوا
+                          </th>
+                          <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
+                            لینک محتوا
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {messages.map(
+                          (message, i) =>
+                            (message.isFiles ||
+                              message.isAudio ||
+                              message.isImg ||
+                              message.isVideo) && (
+                              <tr key={i} className="even:bg-gray-100">
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.sender}
+                                </td>
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.recipient}
+                                </td>
+                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                                  {message.isFiles
+                                    ? "فایل"
+                                    : message.isAudio
+                                    ? "صدا"
+                                    : message.isImg
+                                    ? "عکس"
+                                    : "ویدیو"}
+                                </td>
+                                <td
+                                  onClick={() =>
+                                    (window.location.href = message.userContent)
+                                  }
+                                  style={{ cursor: "pointer" }}
+                                  className="py-2 px-4 border-b border-gray-300 text-gray-800"
+                                >
+                                  <FaExternalLinkAlt />
+                                </td>
+                              </tr>
+                            )
+                        )}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+              </div>
             )}
-          </div>
+
+            {searchOption === "mobile" &&
+              users.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
+                >
+                  <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
+                    <span>{user.mobile}</span>
+                  </div>
+                  <div className="text-center font-bold text-xl">
+                    <h4>{user.fullname}</h4>
+                    <p>{user.username}</p>
+                  </div>
+                  <img
+                    src={
+                      user.avatar
+                        ? `https://195.191.45.56:5155/uploads/${user.avatar}`
+                        : bgUser
+                    }
+                    className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2"
+                  />
+                </div>
+              ))}
+          </>
         )}
-
-        {searchOption === "users" &&
-          users.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
-            >
-              <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
-                <span>{user.mobile}</span>
-              </div>
-              <div className="text-center font-bold text-xl">
-                <h4>{user.fullname}</h4>
-                <p>{user.username}</p>
-              </div>
-              <img
-                src={
-                  user.avatar
-                    ? `https://195.191.45.56:5155/uploads/${user.avatar}`
-                    : bgUser
-                }
-                className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2"
-              />
-            </div>
-          ))}
-
-        {searchOption === "chat" && (
-          <div className="overflow-auto w-full">
-            {/* نمایش جدول محتوای متنی تنها زمانی که داده‌ای وجود دارد */}
-            {messages.some(
-              (message) =>
-                !message.isFiles &&
-                !message.isAudio &&
-                !message.isImg &&
-                !message.isVideo
-            ) && (
-              <>
-                <table className="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
-                  <thead>
-                    <tr>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        فرستنده
-                      </th>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        گیرنده
-                      </th>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        محتوا
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {messages.map(
-                      (message, i) =>
-                        !message.isFiles &&
-                        !message.isAudio &&
-                        !message.isImg &&
-                        !message.isVideo && (
-                          <tr key={i} className="even:bg-gray-100">
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.sender}
-                            </td>
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.recipient}
-                            </td>
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.userContent}
-                            </td>
-                          </tr>
-                        )
-                    )}
-                  </tbody>
-                </table>
-              </>
-            )}
-
-            {/* نمایش جدول فایل‌ها تنها زمانی که داده‌ای وجود دارد */}
-            {messages.some(
-              (message) =>
-                message.isFiles ||
-                message.isAudio ||
-                message.isImg ||
-                message.isVideo
-            ) && (
-              <>
-                <h2 className="text-2xl font-bold text-right p-2 my-2 border-b-2">
-                  :انواع فایل ها
-                </h2>
-                <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-                  <thead>
-                    <tr>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        فرستنده
-                      </th>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        گیرنده
-                      </th>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        نوع محتوا
-                      </th>
-                      <th className="py-2 px-4 border-b-2 border-gray-300 text-left font-semibold text-gray-700">
-                        لینک محتوا
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {messages.map(
-                      (message, i) =>
-                        (message.isFiles ||
-                          message.isAudio ||
-                          message.isImg ||
-                          message.isVideo) && (
-                          <tr key={i} className="even:bg-gray-100">
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.sender}
-                            </td>
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.recipient}
-                            </td>
-                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                              {message.isFiles
-                                ? "فایل"
-                                : message.isAudio
-                                ? "صدا"
-                                : message.isImg
-                                ? "عکس"
-                                : "ویدیو"}
-                            </td>
-                            <td
-                              onClick={() =>
-                                (window.location.href = message.userContent)
-                              }
-                              style={{ cursor: "pointer" }}
-                              className="py-2 px-4 border-b border-gray-300 text-gray-800"
-                            >
-                              <FaExternalLinkAlt />
-                            </td>
-                          </tr>
-                        )
-                    )}
-                  </tbody>
-                </table>
-              </>
-            )}
-          </div>
-        )}
-
-        {searchOption==='mobile'&& users.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
-            >
-              <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
-                <span>{user.mobile}</span>
-              </div>
-              <div className="text-center font-bold text-xl">
-                <h4>{user.fullname}</h4>
-                <p>{user.username}</p>
-              </div>
-              <img
-                src={
-                  user.avatar
-                    ? `https://195.191.45.56:5155/uploads/${user.avatar}`
-                    : bgUser
-                }
-                className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2"
-              />
-            </div>
-          ))}
       </div>
     </div>
   );
