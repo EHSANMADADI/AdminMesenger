@@ -9,6 +9,7 @@ interface PermissionData {
 
 interface PermissionUserProps {
   Id: any;
+  showAdduser: boolean;
 }
 interface Members {
   id: number;
@@ -22,7 +23,10 @@ interface User {
   fullname: string;
   username: string;
 }
-export default function PermissionUser({ Id }: PermissionUserProps) {
+export default function PermissionUser({
+  Id,
+  showAdduser,
+}: PermissionUserProps) {
   const userId = localStorage.getItem("userId");
   const [allPermissions, setAllPermissions] = useState<PermissionData[]>([]);
   const [userPermissions, setUserPermissions] = useState<PermissionData[]>([]);
@@ -66,8 +70,8 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
   }, [userPermissions]);
 
   useEffect(() => {
-    const userPermissionId=userPermissions.map((item)=>item.permissionId)
-    
+    const userPermissionId = userPermissions.map((item) => item.permissionId);
+
     api
       .post(
         "/Admin/UsersByPermissions",
@@ -81,17 +85,21 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
       .then((response) => {
         console.log("UserByPermission", response.data);
         if (response.data && Array.isArray(response.data.users)) {
-          const uniqueUserIds = new Set<string>(response.data.users.map((user: { id: any; }) => user.id)); // ایجاد Set برای شناسه‌های یکتا
+          const uniqueUserIds = new Set<string>(
+            response.data.users.map((user: { id: any }) => user.id)
+          ); // ایجاد Set برای شناسه‌های یکتا
           const uniqueUsers: User[] = [];
-  
+
           // ساخت اشیاء کاربر از روی شناسه‌های یکتا
-          uniqueUserIds.forEach(id => {
-            const user = response.data.users.find((user: { id: string; }) => user.id === id); // پیدا کردن کاربر بر اساس شناسه
+          uniqueUserIds.forEach((id) => {
+            const user = response.data.users.find(
+              (user: { id: string }) => user.id === id
+            ); // پیدا کردن کاربر بر اساس شناسه
             if (user) {
               uniqueUsers.push(user); // اضافه کردن کاربر به آرایه یکتا
             }
           });
-  
+
           setAddUsers(uniqueUsers); // بروزرسانی لیست کاربران
         } else if (response.data) {
           const upUser: User[] = []; // نوع آرایه را مشخص کنید
@@ -100,12 +108,13 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
               item.users.forEach((user: User) => upUser.push(user)); // اضافه کردن کاربران به upUser
             }
           }
-  
+
           // حذف کاربران تکراری
-          const uniqueUpUser = Array.from(new Set(upUser.map(user => user.id)))
-            .map(id => upUser.find(user => user.id === id)); // ایجاد اشیاء کاربر برای کاربران یکتا
-  
-            setAddUsers(uniqueUpUser as User[]); // اطمینان از نوع کاربر
+          const uniqueUpUser = Array.from(
+            new Set(upUser.map((user) => user.id))
+          ).map((id) => upUser.find((user) => user.id === id)); // ایجاد اشیاء کاربر برای کاربران یکتا
+
+          setAddUsers(uniqueUpUser as User[]); // اطمینان از نوع کاربر
         }
       })
       .catch((err) => {
@@ -155,22 +164,25 @@ export default function PermissionUser({ Id }: PermissionUserProps) {
           </div>
         ))}
       </div>
-
-      <div className="flex w-full border-b-2">
-        <h2 className="text-2xl font-bold p-3">افزودن کاربر</h2>
-      </div>
-      <div className="max-h-1/3 w-full overflow-auto grid grid-cols-2 my-3">
-        {addUsers.map((user,i) => {
-          return (
-            <UserUi
-            key={i}
-              fullname={user.fullname}
-              avatar={user.avatar}
-              id={user.id}
-            />
-          );
-        })}
-      </div>
+      {showAdduser && (
+        <>
+          <div className="flex w-full border-b-2">
+            <h2 className="text-2xl font-bold p-3">افزودن کاربر</h2>
+          </div>
+          <div className="max-h-1/3 w-full overflow-auto grid grid-cols-2 my-3">
+            {addUsers.map((user, i) => {
+              return (
+                <UserUi
+                  key={i}
+                  fullname={user.fullname}
+                  avatar={user.avatar}
+                  id={user.id}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }

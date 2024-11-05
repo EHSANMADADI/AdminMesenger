@@ -261,7 +261,7 @@ export default function FormEditUser() {
         </div>
         <Fade delay={580}>
           <div>
-            <PermissionUser Id={userIds} />
+            <PermissionUser Id={userIds} showAdduser={false} />
           </div>
         </Fade>
 

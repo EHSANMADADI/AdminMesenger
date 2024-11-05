@@ -17,7 +17,7 @@ export default function EditPermissionUser() {
           <IoMdArrowRoundBack />
         </span>
         <div className="w-10/12">
-          <PermissionUser Id={0} />
+          <PermissionUser Id={0} showAdduser={false} />
         </div>
       </div>
     </div>

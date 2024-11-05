@@ -27,6 +27,7 @@ interface Message {
   isVideo: boolean;
   isImg: boolean;
   isAudio: boolean;
+  isLoc:boolean;
 }
 
 export default function Search() {
@@ -114,7 +115,7 @@ export default function Search() {
 
   useEffect(() => {
     if (!searchOption) return; // جلوگیری از اجرای زمانی که گزینه انتخاب نشده است
-    
+
     setLoading(true);
     if (searchOption === "users") {
       fetchUsers();
@@ -124,7 +125,6 @@ export default function Search() {
       fetchUsersByMobile();
     }
   }, [pageination, searchOption, searchTerm]);
-  
 
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 w-full h-screen flex p-5">
@@ -248,7 +248,7 @@ export default function Search() {
               users.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
+                  className="flex items-center justify-between bg-gray-200 p-5 rounded-md w-full my-2"
                 >
                   <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
                     <span>{user.mobile}</span>
@@ -263,7 +263,7 @@ export default function Search() {
                         ? `https://195.191.45.56:5155/uploads/${user.avatar}`
                         : bgUser
                     }
-                    className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2"
+                    className="md:w-16 md:h-16 w-5 h-5 rounded-full border-double border-green-300 border-2 flex items-center"
                   />
                 </div>
               ))}
@@ -276,7 +276,8 @@ export default function Search() {
                     !message.isFiles &&
                     !message.isAudio &&
                     !message.isImg &&
-                    !message.isVideo
+                    !message.isVideo&&
+                    !message.isLoc
                 ) && (
                   <>
                     <table className="min-w-full bg-white border border-gray-300 rounded-lg mb-4">
@@ -299,6 +300,7 @@ export default function Search() {
                             !message.isFiles &&
                             !message.isAudio &&
                             !message.isImg &&
+                            !message.isLoc&&
                             !message.isVideo && (
                               <tr key={i} className="even:bg-gray-100">
                                 <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
@@ -324,7 +326,8 @@ export default function Search() {
                     message.isFiles ||
                     message.isAudio ||
                     message.isImg ||
-                    message.isVideo
+                    message.isVideo||
+                    message.isLoc
                 ) && (
                   <>
                     <h2 className="text-2xl font-bold text-right p-2 my-2 border-b-2">
@@ -348,40 +351,51 @@ export default function Search() {
                         </tr>
                       </thead>
                       <tbody>
-                        {messages.map(
-                          (message, i) =>
-                            (message.isFiles ||
-                              message.isAudio ||
-                              message.isImg ||
-                              message.isVideo) && (
-                              <tr key={i} className="even:bg-gray-100">
-                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                                  {message.sender}
-                                </td>
-                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                                  {message.recipient}
-                                </td>
-                                <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
-                                  {message.isFiles
-                                    ? "فایل"
-                                    : message.isAudio
-                                    ? "صدا"
-                                    : message.isImg
-                                    ? "عکس"
-                                    : "ویدیو"}
-                                </td>
-                                <td
-                                  onClick={() =>
-                                    (window.location.href = message.userContent)
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                  className="py-2 px-4 border-b border-gray-300 text-gray-800"
-                                >
-                                  <FaExternalLinkAlt />
-                                </td>
-                              </tr>
-                            )
-                        )}
+                        {messages.map((message, i) => (
+                          <tr
+                            key={i}
+                            className={` ${
+                              message.isFiles
+                                ? "bg-red-200" // قرمز کم‌رنگ برای فایل
+                                : message.isImg
+                                ? "bg-yellow-200" // زرد کم‌رنگ برای تصویر
+                                : message.isAudio
+                                ? "bg-green-200" // سبز کم‌رنگ برای صدا
+                                : message.isVideo
+                                ? "bg-blue-200" // آبی کم‌رنگ برای ویدیو
+                                : message.isLoc?"bg-green-200":""
+                            }`}
+                          >
+                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                              {message.sender}
+                            </td>
+                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                              {message.recipient}
+                            </td>
+                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                              {message.isFiles
+                                ? "فایل"
+                                : message.isImg
+                                ? "تصویر"
+                                : message.isAudio
+                                ? "صدا"
+                                : message.isLoc
+                                ? "موقعیت مکانی"
+                                : message.isVideo
+                                ? "ویدیو"
+                                : ""}
+                            </td>
+                            <td className="py-2 px-4 border-b border-gray-300 text-gray-800">
+                              <a
+                                href={message.userContent}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <FaExternalLinkAlt className="text-blue-500" />
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </>
@@ -393,7 +407,7 @@ export default function Search() {
               users.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center justify-around bg-gray-200 p-5 rounded-md w-full my-2"
+                  className="flex items-center justify-between bg-gray-200 p-5 rounded-md w-full my-2"
                 >
                   <div className="font-bold text-xl cursor-auto hover:scale-105 duration-300">
                     <span>{user.mobile}</span>

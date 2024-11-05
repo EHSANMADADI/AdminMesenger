@@ -278,7 +278,7 @@ export default function FormEditGroup() {
           </div>
         )}
         <div>
-          <PermissionUser Id={GroupId} />
+          <PermissionUser Id={GroupId} showAdduser={true} />
         </div>
 
         <div className="flex w-full justify-start items-center mt-5 ">
