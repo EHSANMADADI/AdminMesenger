@@ -25,7 +25,7 @@ interface User {
 }
 export default function PermissionUser({
   Id,
-  showAdduser,
+  showAdduser=true,
 }: PermissionUserProps) {
   const userId = localStorage.getItem("userId");
   const [allPermissions, setAllPermissions] = useState<PermissionData[]>([]);
