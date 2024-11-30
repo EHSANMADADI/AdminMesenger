@@ -115,8 +115,6 @@ export default function FormEditGroup() {
     if (file) formData.append("Avatar", file);
 
     users.forEach((user) => formData.append("Members", user.id.toString()));
-   
-
     Members.forEach((member) => formData.append("Members", member.toString()));
     const adminIds = users
       .filter((user) => user.roleInChat === "Admin_u")

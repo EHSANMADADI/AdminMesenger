@@ -74,6 +74,27 @@ export default function TabeleManageUser() {
 
   const fetchUsers = () => {
     setLoading(true);
+    search?api.get(
+      `/User/getUserList?page=${pageination}&pageSize=${totalCount}&search=${searchTerm}`,
+      {
+        headers: {
+          userId,
+        },
+      }
+    )
+    .then((res) => {
+      setUsers(res.data.users);
+      console.log(res);
+      
+      setTotalCount(res.data.totalCount);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      setLoading(false);
+      setSearch(false)
+    }):
     api
       .get(
         `/User/getUserList?page=${pageination}&pageSize=${pageSize}&search=${searchTerm}`,
@@ -126,6 +147,12 @@ export default function TabeleManageUser() {
                 className="w-full bg-transparent focus:outline-none outline-none"
                 value={searchTerm} // Bind search term
                 onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setSearch(true);
+                  }
+                }
+              }
               />
             </div>
             <table className="w-full text-gray-500 shadow-2xl sm:rounded-lg">
