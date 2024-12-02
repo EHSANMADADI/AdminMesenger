@@ -16,6 +16,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [loader, setLoader] = useState(false);
+  const[error,setError]=useState('')
+
   const { username, setUsername, passwordUser, setPasswordUser, setActive } =
     useStore();
   const Loginfun = () => {
@@ -40,9 +42,9 @@ export default function Login() {
         .catch((err) => {
           console.log(userName, password);
           console.log(err);
-  
+          console.log(err.response?.data);
           Swal.fire({
-            title: "نام کاربری یا رمز عبور اشتباه است ",
+            title: err.response?.data,
             icon: "error",
           });
           setLoader(false);
