@@ -24,7 +24,7 @@ export default function AdminFerstPage() {
         console.log(username);
         if (username) {
             setActive(true)
-            api.get(`/Home/validUser?username=${username}`).then((res) => {
+            api.get(`/Login/validUser?username=${username}`).then((res) => {
                 console.log(res);
                 setName(res.data.userFullname)
                 console.log(res.data.userId);

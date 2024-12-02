@@ -22,7 +22,7 @@ export default function Login() {
     if(userName&&password){
       setLoader(true);
       api
-        .post("/Home/Login", { username: userName, password: password })
+        .post("/Login/auth", { username: userName, password: password })
         .then((res) => {
           setUsername(userName);
           setPasswordUser(password);
