@@ -42,6 +42,15 @@ export default function FormAddNewuser() {
     }
   };
 
+  useEffect(() => {
+    if (isAdmin) {
+      const allPermissions = PermissionList.map((item) => item.name);
+      setPermissions(allPermissions);
+    } else {
+      setPermissions([]); // Clear permissions when not admin
+    }
+  }, [isAdmin, PermissionList]); // Add PermissionList to the dependency array
+
   const CreateUser = () => {
     const formData = new FormData();
 
@@ -175,6 +184,8 @@ export default function FormAddNewuser() {
                   >
                     <div className="flex items-center ps-3">
                       <input
+                        checked={permissions.includes(item.name)} // تیک بر اساس لیست دسترسی‌ها
+                        disabled={isAdmin}
                         id={item.name}
                         type="checkbox"
                         value={item.name}
